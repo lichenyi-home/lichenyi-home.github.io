@@ -1,0 +1,2717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport 是响应式的关键：让手机浏览器按设备宽度来显示 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>李宸谊的个人主页</title>
+
+  <!-- 引入现代无衬线字体：用于 logo / 英文装饰小字，提升杂志质感；加载失败会自动回退到系统字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       1. 全局基础样式
+       ========================================================= */
+    /* :root 里放"变量"，整个页面统一用这些颜色，改配色只改这里即可 */
+    :root {
+      --primary: #2563eb;      /* 主色调：正蓝 */
+      --primary-dark: #1d4ed8; /* 主色加深，用于悬停/主按钮 */
+      --accent: #93c5fd;       /* 浅蓝，用于弱化点缀 */
+      --orange: #fb923c;       /* 点缀色：暖橙，克制使用 */
+      --bg: #faf9f6;           /* 页面背景：米白 */
+      --bg-soft: #f4f3ef;      /* 分区衬底：更浅的米灰 */
+      --surface: #ffffff;      /* 卡片/表面：白 */
+      --text: #1f2937;         /* 正文文字颜色 */
+      --text-muted: #6b7280;   /* 次要文字颜色 */
+      --border: #e8e6e1;       /* 分隔线/描边的浅灰 */
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);   /* 卡片阴影：轻、柔 */
+      --radius: 16px;          /* 统一圆角 */
+      --max-width: 1120px;     /* 内容最大宽度 */
+      --font-display: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    /* 重置默认 margin，让布局更可控 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      /* 打开页面时平滑滚动（原生的，不依赖 JS） */
+      scroll-behavior: smooth;
+      /* 导航栏固定，锚点跳转时留出顶部高度，避免标题被导航挡住 */
+      scroll-padding-top: 76px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 大标题用更粗的字重 */
+    h1, h2, h3 {
+      line-height: 1.28;
+    }
+
+    /* 每个区块在这里统一定位，让版面有节奏 */
+    section {
+      padding: 96px 24px;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       板块标题：英文小字装饰 + 中文大标题（居中）
+       ========================================================= */
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    /* 英文小字：细小、加字距、用橙色点缀，杂志味 */
+    .section-eyebrow {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .section-subtitle {
+      margin-top: 14px;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* =========================================================
+       2. 固定导航栏
+       ========================================================= */
+    .navbar {
+      position: fixed;      /* 固定在页面顶部 */
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;         /* 保证浮在内容之上 */
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);   /* 毛玻璃效果 */
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* logo：名字 + 一个橙色圆点，更精致 */
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 0.5px;
+    }
+    .logo .dot {
+      color: var(--orange);
+    }
+
+    /* 导航菜单：桌面端横排 */
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 8px 16px;
+      border-radius: 999px;              /* 胶囊形 */
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    /* 导航项悬停：变蓝、轻微上移 */
+    .nav-links a:hover {
+      background: var(--bg-soft);
+      color: var(--primary);
+    }
+
+    /* 导航栏右侧的实心蓝按钮 */
+    .nav-btn {
+      display: inline-block;
+      padding: 9px 22px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff !important;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .nav-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.32);
+    }
+
+    /* =========================================================
+       3. Hero 首屏区：左右分栏（左文字 / 右大圆头像）
+       ========================================================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 24px 80px;
+      background:
+        radial-gradient(720px 520px at 88% 20%, rgba(147, 197, 253, 0.35), transparent 60%),
+        radial-gradient(520px 420px at 8% 88%, rgba(251, 146, 60, 0.10), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    }
+
+    /* =========================================================
+       身份标签胶囊（位于定位句下方）
+       ========================================================= */
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    /* =========================================================
+       双按钮组
+       ========================================================= */
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    /* 实心主按钮 */
+    .btn-primary {
+      display: inline-block;
+      padding: 15px 34px;
+      border: none;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28);
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.36);
+    }
+
+    /* 描边次按钮 */
+    /* 疑问标注（本次去重未处理，保留原样）：
+       本条的 border-color / color 实际会被末尾太空段的 .btn-outline 覆盖，
+       hover 的背景/文字色也被覆盖；但 hover 的 translateY(-3px) 抬升
+       没有太空版，仍由下面这条生效。
+       因合并清单未包含 .btn-outline，故原样保留，只在此标注。 */
+    .btn-outline {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    /* =========================================================
+       4. 关于我
+       ========================================================= */
+    .about {
+      /* 底色不再是浅米灰：四块统一铺各自星球的星空地表，
+         见样式表末尾「板块背景」一段（用 .view-panel 一次性定义） */
+      /* 纵向留白略收窄，配合 Bento 网格尽量在笔记本一屏内看全 */
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    /* #about 的标题与内容间距整体收紧 */
+    .about .section-header {
+      margin-bottom: 40px;
+    }
+
+    /* ---------- #about 内部：Bento 卡片网格 ---------- */
+
+    /* 桌面三列。三张卡片各占的格数不同，靠下面的跨列规则拼出不规则的
+       "便当盒"节奏：简历 = 整行；爱好 = 左侧两列；性格 = 最右一列。
+       平板上降为两列、手机上单列，见本节末尾的两段媒体查询。 */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    /* 每块子板块（简历 / 爱好 / 性格）统一的卡片样式 */
+    .about-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ---------- Bento 跨列：三张卡片占的格数各不相同 ---------- */
+
+    /* ① 简历展示：横向铺满整行（1 / -1 表示从第一列一直跨到最后一列） */
+    .about-resume {
+      grid-column: 1 / -1;
+      justify-content: flex-start;   /* 内容是横向铺开的，不再垂直居中 */
+    }
+    /* ② 个人爱好：占左侧两列 */
+    .about-hobby {
+      grid-column: 1 / 3;
+    }
+    /* ③ 性格特点：只占最右一列 */
+    .about-trait {
+      grid-column: 3;
+    }
+
+    /* 卡片小标题：沿用全站的蓝色竖条风格 */
+    .about-tile h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .about-tile h3::before {
+      content: "";
+      width: 5px;
+      height: 18px;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+
+    /* 卡片正文：简洁紧凑 */
+    .about-tile p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+    .about-tile p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 简历展示：三个信息行（教育背景 / 技能栈 / 学习经历） */
+    .resume-row {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .resume-row:last-child {
+      margin-bottom: 0;
+    }
+    .resume-row b {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* 简历整行宽卡内部再分左右两栏（左：教育背景＋技能栈；右：学习经历）。
+       不这么做的话，整行卡片里只有寥寥两行字，会留下很空的一条。 */
+    .about-resume-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      column-gap: 44px;
+      align-items: start;
+    }
+
+    /* ③④ 爱好 / 性格：标签胶囊 */
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .about-tag {
+      padding: 5px 13px;
+      border-radius: 999px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* #about 响应式① 平板：三列会过挤，降成两列（简历仍占整行，爱好/性格并排） */
+    @media (max-width: 920px) {
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .about-resume {
+        grid-column: 1 / -1;
+      }
+      .about-hobby {
+        grid-column: 1;
+      }
+      .about-trait {
+        grid-column: 2;
+      }
+      /* 简历内部的左右两栏在窄屏会被挤成一条条，改回上下堆叠 */
+      .about-resume-cols {
+        grid-template-columns: 1fr;
+        row-gap: 6px;
+      }
+    }
+
+    /* #about 响应式② 手机：网格改单列。
+       跨列必须一起重置成 auto，否则卡片还按老列号摆放，会错位 */
+    @media (max-width: 640px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-resume,
+      .about-hobby,
+      .about-trait {
+        grid-column: auto;
+      }
+      .about-tile {
+        padding: 22px 20px;
+      }
+    }
+
+    /* =========================================================
+       5. 项目 / 作品
+       ========================================================= */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);  /* 桌面端三列 */
+      gap: 26px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;      /* 让图片圆角跟随卡片 */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    /* 占位封面：蓝系渐变 + 居中图标与英文标签。
+       以后有真实截图时，把整块替换成 <img> 即可（见 HTML 注释） */
+    .project-thumb {
+      position: relative;
+      height: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* 封面图标：内联 SVG 单色线条，跨平台外观一致（SVG 用 width/height 控制尺寸，font-size 无效） */
+    .project-thumb .thumb-icon {
+      width: 52px;
+      height: 52px;
+      filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.22));
+    }
+
+    /* 封面下方的英文小标签，增加设计感 */
+    .project-thumb .thumb-label {
+      font-family: var(--font-display);
+      font-size: 0.76rem;
+      letter-spacing: 2.5px;
+      font-weight: 600;
+      opacity: 0.94;
+    }
+
+    /* 封面右上角一抹高光，提升精致度（纯装饰） */
+    .project-thumb::after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -30px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      filter: blur(6px);
+    }
+
+    /* 每个项目可换一套蓝系渐变，保持统一又有层次 */
+    .project-thumb.tint-blue   { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    .project-thumb.tint-cyan   { background: linear-gradient(135deg, #0369a1, #38bdf8); }
+    .project-thumb.tint-indigo { background: linear-gradient(135deg, #4338ca, #818cf8); }
+
+    /* 卡片正文：留白从容，标题略大、行距舒服 */
+    .project-body {
+      padding: 26px 24px 30px;
+    }
+    .project-body h3 {
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.24rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .project-body p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.85;
+    }
+
+    /* 项目卡片上的小标签（技术点 / 类型），增强真实感 */
+    .project-meta {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 4px 13px;
+      border-radius: 999px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================================================
+       6. 数字分身（前端先行 · 数据占位 · 接入中）
+       ========================================================= */
+    .avatar-stage {
+      /* 底色交给「板块背景」那段统一处理（本块是紫色的网络节点星） */
+    }
+
+    /* 外层大卡片：托起整个数字分身模块 */
+    .avatar-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 44px 46px 48px;
+    }
+
+    /* 模块内部主网格：左形象 + 右对话/信息 */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;   /* 桌面端：左固定形象区，右自适应 */
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* ---------- 左：形象展示区 ---------- */
+    .avatar-figure {
+      text-align: center;
+    }
+
+    /* 形象占位：圆形蓝胶渐变 + “形象加载中”
+       以后有真实形象图，把这一整颗 <div> 替换成 <img> 即可（见 HTML 注释） */
+    .avatar-badge {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 20px 46px rgba(37, 99, 235, 0.26);
+      border: 6px solid #fff;
+      outline: 1px solid var(--border);
+    }
+    .avatar-badge .badge-icon {
+      font-size: 2.6rem;
+      line-height: 1;
+    }
+    .avatar-badge .badge-hint {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      opacity: 0.92;
+    }
+
+    /* 状态徽标：功能开发中 / 数字分身接入中 */
+    .stage-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 8px;
+      padding: 7px 15px;
+      border-radius: 999px;
+      background: rgba(251, 146, 60, 0.12);
+      color: #ea8a2f;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .stage-status .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: inline-block;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    /* 一个小呼吸动画，暗示“正在接入”，不复杂 */
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; transform: scale(0.9); }
+      50%      { opacity: 1;    transform: scale(1); }
+    }
+
+    /* ---------- 右：对话 / 互动区 ---------- */
+    .avatar-panel {
+      min-width: 0;
+    }
+
+    /* 聊天框：模拟消息区 */
+    .chat-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 18px 14px;
+      min-height: 168px;
+      margin-bottom: 14px;
+    }
+    .chat-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-size: 0.94rem;
+      line-height: 1.75;
+    }
+    .chat-msg .msg-role {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .chat-msg .msg-text {
+      color: var(--text);
+    }
+    .chat-msg.bot .msg-role { color: var(--primary); }
+    .chat-msg.bot .msg-text {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-style: italic;      /* 系统构建中的提示，用斜体弱化 */
+    }
+
+    /* 输入区：输入框 + 发送按钮 */
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .chat-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .chat-send {
+      padding: 12px 22px;
+      border: none;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+    .chat-send:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    /* ---------- 占位数据区：基础信息 / FAQ ---------- */
+    .avatar-info {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;   /* 两列：基础信息 + FAQ */
+      gap: 20px;
+    }
+    .info-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .info-block h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.02rem;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .info-block h4::before {
+      content: "";
+      width: 5px;
+      height: 18px;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+    .info-row {
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-row b {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .faq-item {
+      margin-bottom: 12px;
+    }
+    .faq-item:last-child { margin-bottom: 0; }
+    .faq-q {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .faq-q::before {
+      content: "Q · ";
+      color: var(--orange);
+      font-weight: 700;
+    }
+    .faq-a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    /* ---------- 数字分身模块的响应式 ---------- */
+    @media (max-width: 920px) {
+      .avatar-grid {
+        grid-template-columns: 1fr;      /* 手机/平板：改上下堆叠 */
+        gap: 28px;
+      }
+      .avatar-badge {
+        width: 150px;
+        height: 150px;
+        font-size: 2.2rem;
+      }
+    }
+    @media (max-width: 640px) {
+      .avatar-wrap { padding: 30px 22px 34px; }
+      .avatar-info { grid-template-columns: 1fr; }  /* 信息区也改单列 */
+    }
+
+    /* =========================================================
+       7. 联系我
+       ========================================================= */
+    .contact {
+      /* 底色交给「板块背景」那段统一处理（本块是橙红色的行星地表） */
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* 联系方式卡片 */
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 30px;
+      background: var(--surface);
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .contact-card:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.14);
+    }
+
+    /* 尚未就绪的联系方式（GitHub / 社交）：做成"不可点击"的占位卡片。
+       这样既保留版面结构，又不会出现 href="#" 点击跳到页顶、
+       或打开无效链接（如 xxx 占位地址）的问题。
+       以后有真实主页，换回 <a class="contact-card" href="真实地址"> 即可。 */
+    .contact-card.is-pending {
+      cursor: default;              /* 鼠标不变手型，明确"不可点" */
+      pointer-events: none;         /* 彻底禁用点击与悬停动效 */
+      color: var(--text-muted);     /* 文字弱化，与可用项区分 */
+      background: transparent;      /* 去白底 */
+      border-style: dashed;         /* 虚线边框，暗示"待补充" */
+      box-shadow: none;
+    }
+
+    /* =========================================================
+       7. 页脚
+       ========================================================= */
+    .footer {
+      text-align: center;
+      padding: 30px 24px;
+      /* 四块板块都换成深色星空底之后，页脚也用同一块深空色收尾，
+         否则最底下会留一条浅色带 */
+      color: #c3cee6;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(147, 197, 253, 0.18);
+      background: #05070f;
+    }
+    .footer .dot {
+      color: var(--orange);
+    }
+
+    /* =========================================================
+       8. 回到顶部按钮（默认隐藏，滚动画出现，JS 控制）
+       ========================================================= */
+    .back-to-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.30);
+      opacity: 0;               /* 默认不可见 */
+      visibility: hidden;        /* 默认不占位/不可点 */
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease, background 0.25s ease, visibility 0.3s;
+      z-index: 90;
+    }
+
+    /* JS 添加 .show 类后变为可见（下面的动画只给出现用） */
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-dark);
+    }
+
+    /* =========================================================
+       9. 响应式适配（媒体查询）
+       ========================================================= */
+
+    /* 平板：项目从三列变两列。
+       （首屏在 ≤920px 的堆叠规则已统一归到末尾太空段 10.8，此处不再重复） */
+    @media (max-width: 920px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* 手机：section 内边距、项目单列、联系卡与标题字号。
+       （首屏与导航的紧凑规则已统一归到末尾太空段 10.8，此处不再重复） */
+    @media (max-width: 640px) {
+      section { padding: 72px 18px; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+
+      .contact-card { width: 100%; justify-content: center; }
+
+      .section-title { font-size: 1.8rem; }
+    }
+
+    /* =========================================================
+       10. 太空主题（首屏星空 + 星球导航）
+       —— 本段统一追加在样式表末尾，用于覆盖上面 .hero / .navbar 的浅色默认样式
+       ========================================================= */
+
+    /* ---------- 10.1 首屏容器：深色星空 ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 96px 24px 88px;
+      /* 整块首屏共享"这一片"星空：宇航员和四颗星球都叠加在它上面，
+         不再给任何一张小图单独加星空/星云背景。
+         底色之外还叠了一层星云带 + 三团辉光，它们放在 .hero::before 上，
+         这样可以被单独遮罩、在首屏底部淡出（背景图层做不到这件事） */
+      background: linear-gradient(180deg, #030a23 0%, #060d20 100%);
+    }
+
+    /* 星云带 + 三团辉光（从 .hero 的 background 拆出来，为了能单独遮罩） */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      /* 绝对定位元素不参与 .hero 的 flex 布局，不会影响居中 */
+      pointer-events: none;
+      background:
+        /* 一条很淡的斜向星云带：用渐变实现，天然就是模糊的，只加层次不抢戏 */
+        linear-gradient(118deg,
+          transparent 30%,
+          rgba(96, 165, 250, 0.085) 44%,
+          rgba(147, 197, 253, 0.055) 51%,
+          rgba(94, 66, 180, 0.075) 59%,
+          transparent 72%),
+        /* 三团极淡的辉光，避免整块背景死黑一片 */
+        radial-gradient(720px 560px at 78% 26%, rgba(56, 106, 200, 0.24), transparent 62%),
+        radial-gradient(560px 480px at 12% 78%, rgba(94, 66, 180, 0.18), transparent 66%),
+        radial-gradient(860px 660px at 50% 52%, rgba(30, 64, 140, 0.15), transparent 72%);
+      /* 关键：让星云/辉光在离底边 120px 处开始淡出、到最底部归零。
+         首屏底边于是收敛成纯底色 #060d20，与 .space-fade 的起点严丝合缝，
+         且不随视口高度变化——之前那条约 5% 的横向色阶就是这么消掉的 */
+      -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 120px), transparent 100%);
+              mask-image: linear-gradient(180deg, #000 calc(100% - 120px), transparent 100%);
+    }
+
+    /* 星空层：用多点 radial-gradient 平铺成星点，再极缓慢漂移，制造"漂浮感"。
+       注意 top/left/right/bottom 各外扩 240px，它必须 ≥ starDrift 的位移 240px
+       （见下方 @keyframes），这样漂移一个周期后画面依然无缝、不会露边。
+       以后若把位移改大，这里的外扩要同步改大。
+       星点只由这一层提供，任何单张图片都不再自带星空背景 */
+        .starfield {
+      position: absolute;
+      top: -240px;
+      left: -240px;
+      right: -240px;
+      bottom: -240px;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 1;
+      background-repeat: repeat;
+      /* 疏密渐变：右上（宇航员/星球这一侧）保持满密度，
+         向左下（左侧文字这一侧）明显变淡，做出自然的星空纵深。
+         焦点放在 80% 26%，衰减拉陡（1 → .70 → .30 → .08），
+         这样才看得出浓淡而不是整片均匀铺开；左侧标题/正文也更清晰。
+         若想改成"全屏一样密"，把下面这两行删掉即可 */
+      -webkit-mask-image: radial-gradient(115% 105% at 80% 26%,
+        #000 0%, rgba(0, 0, 0, 0.70) 36%, rgba(0, 0, 0, 0.30) 66%, rgba(0, 0, 0, 0.08) 100%);
+              mask-image: radial-gradient(115% 105% at 80% 26%,
+        #000 0%, rgba(0, 0, 0, 0.70) 36%, rgba(0, 0, 0, 0.30) 66%, rgba(0, 0, 0, 0.08) 100%);
+      /* 三套瓦片（180 / 280 / 420px）：星点更大更亮，
+         整屏“肉眼可见”的密度以宇航员周围为基准，
+         不再依赖几乎看不见的微小暗星 */
+      background-image:
+        /* ===== 瓦片 A（180px）：可见细星 ===== */
+        radial-gradient(1.5px 1.5px at 18px 26px,   rgba(255, 255, 255, 0.86), transparent 62%),
+        radial-gradient(1.5px 1.5px at 66px 12px,   rgba(255, 255, 255, 0.90), transparent 62%),
+        radial-gradient(1.4px 1.4px at 118px 44px,  rgba(226, 238, 255, 0.82), transparent 62%),
+        radial-gradient(1.6px 1.6px at 152px 96px,  rgba(255, 255, 255, 0.94), transparent 62%),
+        radial-gradient(1.5px 1.5px at 36px 78px,   rgba(255, 255, 255, 0.88), transparent 62%),
+        radial-gradient(1.4px 1.4px at 88px 132px,  rgba(220, 234, 255, 0.84), transparent 62%),
+        radial-gradient(1.4px 1.4px at 138px 158px, rgba(255, 255, 255, 0.80), transparent 62%),
+        radial-gradient(1.5px 1.5px at 10px 148px,  rgba(255, 255, 255, 0.86), transparent 62%),
+        radial-gradient(1.6px 1.6px at 100px 90px,  rgba(255, 255, 255, 0.92), transparent 62%),
+        radial-gradient(1.5px 1.5px at 160px 20px,  rgba(255, 255, 255, 0.88), transparent 62%),
+        radial-gradient(1.4px 1.4px at 54px 168px,  rgba(226, 238, 255, 0.82), transparent 62%),
+        radial-gradient(1.5px 1.5px at 128px 110px, rgba(255, 255, 255, 0.90), transparent 62%),
+        /* ===== 瓦片 B（280px）：中等星 ===== */
+        radial-gradient(2px 2px at 34px 48px,       rgba(255, 255, 255, 0.94), transparent 64%),
+        radial-gradient(1.9px 1.9px at 216px 30px,  rgba(255, 255, 255, 0.90), transparent 64%),
+        radial-gradient(2.1px 2.1px at 110px 164px, rgba(255, 255, 255, 0.98), transparent 64%),
+        radial-gradient(1.9px 1.9px at 248px 150px, rgba(226, 238, 255, 0.92), transparent 64%),
+        radial-gradient(1.8px 1.8px at 60px 226px,  rgba(255, 255, 255, 0.88), transparent 64%),
+        radial-gradient(2px 2px at 168px 72px,      rgba(255, 255, 255, 0.96), transparent 64%),
+        radial-gradient(1.8px 1.8px at 258px 232px, rgba(255, 255, 255, 0.90), transparent 64%),
+        radial-gradient(1.9px 1.9px at 132px 250px, rgba(226, 238, 255, 0.92), transparent 64%),
+        radial-gradient(2px 2px at 84px 120px,      rgba(255, 255, 255, 0.94), transparent 64%),
+        radial-gradient(2.1px 2.1px at 192px 196px, rgba(255, 255, 255, 0.96), transparent 64%),
+        radial-gradient(1.8px 1.8px at 20px 174px,  rgba(255, 255, 255, 0.88), transparent 64%),
+        radial-gradient(1.9px 1.9px at 226px 88px,  rgba(255, 255, 255, 0.92), transparent 64%),
+        radial-gradient(1.9px 1.9px at 148px 20px,  rgba(226, 238, 255, 0.90), transparent 64%),
+        radial-gradient(1.8px 1.8px at 272px 186px, rgba(255, 255, 255, 0.86), transparent 64%),
+        /* ===== 瓦片 C（420px）：亮星 + 光晕 ===== */
+        radial-gradient(3px 3px at 64px 92px,       rgba(255, 255, 255, 1.00), rgba(206, 228, 255, 0.36) 42%, transparent 74%),
+        radial-gradient(2.8px 2.8px at 344px 58px,  rgba(255, 255, 255, 0.98), rgba(200, 222, 255, 0.32) 40%, transparent 72%),
+        radial-gradient(3px 3px at 176px 268px,     rgba(255, 255, 255, 1.00), rgba(214, 232, 255, 0.34) 42%, transparent 74%),
+        radial-gradient(2.6px 2.6px at 396px 322px, rgba(255, 255, 255, 0.94), transparent 70%),
+        radial-gradient(2.7px 2.7px at 88px 372px,  rgba(255, 255, 255, 0.96), transparent 70%),
+        radial-gradient(3px 3px at 268px 164px,     rgba(255, 255, 255, 1.00), rgba(206, 228, 255, 0.34) 42%, transparent 74%),
+        radial-gradient(2.6px 2.6px at 30px 220px,  rgba(255, 255, 255, 0.94), transparent 70%),
+        radial-gradient(2.5px 2.5px at 388px 210px, rgba(226, 238, 255, 0.92), transparent 70%),
+        radial-gradient(2.7px 2.7px at 210px 396px, rgba(255, 255, 255, 0.96), transparent 70%),
+        radial-gradient(2.8px 2.8px at 140px 40px,  rgba(255, 255, 255, 0.98), transparent 72%);
+      background-size:
+        180px 180px, 180px 180px, 180px 180px, 180px 180px,
+        180px 180px, 180px 180px, 180px 180px, 180px 180px,
+        180px 180px, 180px 180px, 180px 180px, 180px 180px,
+        280px 280px, 280px 280px, 280px 280px, 280px 280px, 280px 280px,
+        280px 280px, 280px 280px, 280px 280px, 280px 280px, 280px 280px,
+        280px 280px, 280px 280px, 280px 280px, 280px 280px,
+        420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px,
+        420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px;
+      animation: starDrift 240s linear infinite;
+    }
+    @keyframes starDrift {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-240px, -240px, 0); }
+    }
+
+    /* 首屏内容层。
+       这里刻意"只加 position:relative、不加 z-index"：
+       一旦有 z-index 就会形成层叠上下文，会让星球图片的 mix-blend-mode
+       只能与透明背景混合（深色方块就露出来了）。不加 z-index，
+       靠 DOM 顺序自然压在星空层之上，混合才能作用到首屏的深色背景 */
+    .hero-inner {
+      /* 以下三条原先只在浅色默认段定义、太空段没覆盖，合并时搬到这里；
+         同一选择器现在只此一处定义 */
+      max-width: var(--max-width);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 56px;
+    }
+
+    /* 左右分栏比例：左约 46% / 右约 54% */
+    .hero-text {
+      flex: 0 1 46%;
+      min-width: 0;
+      max-width: 520px;
+    }
+    .hero-stage {
+      position: relative;
+      flex: 0 1 54%;
+      width: 100%;
+      max-width: 540px;
+      aspect-ratio: 1 / 1;
+      margin-left: auto;
+    }
+
+    /* ---------- 10.2 首屏文字：浅色 + 柔和发光 ----------
+       本小节已与原浅色默认段的 .hero-hello / .hero h1 / .hero-tagline /
+       .hero-tag 合并：浅色段独有的布局与字号属性搬到这里，
+       同一选择器只保留这一处权威定义 */
+    .hero-hello {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      background: rgba(147, 197, 253, 0.14);
+      border: 1px solid rgba(147, 197, 253, 0.24);
+      color: #bfd3f5;
+    }
+    .hero-hello .ball {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #93c5fd;
+      box-shadow: 0 0 10px rgba(147, 197, 253, 0.9);
+    }
+
+    .hero h1 {
+      font-size: 3.4rem;
+      font-weight: 700;                       /* 700：中文系统字体无 800 字重，避免合成加粗 */
+      margin-bottom: 18px;                    /* 来自原浅色默认段 */
+      color: #f2f6ff;
+      letter-spacing: 6px;                    /* 标题字距拉开，更像主题字 */
+      text-shadow:
+        0 0 18px rgba(147, 197, 253, 0.45),
+        0 0 46px rgba(96, 165, 250, 0.28);
+    }
+    .hero h1 .accent { color: #93c5fd; }
+
+    /* 正文不用纯白，避免在深色上刺眼；字号/行高/间距来自原浅色默认段 */
+    .hero-tagline {
+      font-size: 1.18rem;
+      line-height: 1.85;
+      margin-bottom: 28px;
+      color: #c3cee6;
+    }
+
+    .hero-tag {
+      padding: 7px 16px;                      /* 以下四条来自原浅色默认段 */
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      background: rgba(147, 197, 253, 0.10);
+      border: 1px solid rgba(147, 197, 253, 0.22);
+      color: #dbe6fb;
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      border-color: rgba(147, 197, 253, 0.55);
+      color: #dbe6fb;
+    }
+    .btn-outline:hover {
+      background: rgba(147, 197, 253, 0.16);
+      color: #ffffff;
+    }
+
+    /* ---------- 10.3 中心宇航员（不可交互） ---------- */
+    .astronaut {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 56%;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;   /* 深色星空底自动"消失"，只留宇航员与星点 */
+      pointer-events: none;     /* 不可点击 */
+      cursor: default;
+      user-select: none;
+      animation: astroFloat 14s ease-in-out infinite;
+    }
+    /* 宇航员几乎静止：只做 ±3px 的极轻微浮动。
+       周期从 9s 放慢到 14s —— 观感上像悬停在太空里，而不是在上下跳 */
+    @keyframes astroFloat {
+      0%, 100% { transform: translate(-50%, -50%) translateY(-3px); }
+      50%      { transform: translate(-50%, -50%) translateY(3px); }
+    }
+
+    /* ---------- 10.4 四颗星球（环绕 + 可点击） ---------- */
+    .planet {
+      position: absolute;
+      width: 22%;
+      display: block;
+      border-radius: 50%;
+      cursor: pointer;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: filter 0.3s ease;
+
+      /* “轨道摆动”的方向参数：把“绕舞台中心 ±12°”的弧线换算成切线方向上的直线往复。
+         因为摆幅很小（弧长 36~61px），直线与弧线的最大偏差只有约 1.6px，肉眼看不出来。
+         用百分比而不是 px，是为了让摆幅跟着图片一起等比缩放 —— 这样在任何屏幕宽度下
+         摆角都固定在 ±12°，窄屏也不会因为摆幅相对变大而撞到宇航员或别的星球。
+         `--ring-inset` 是点击波纹的圆环往内收多少，好让它贴合星球本体而不是贴着图片边框 */
+      --orbit-x: 33%;
+      --orbit-y: 36%;
+      --ring-inset: 17.8% 21%;   /* 06/07/08 三张图里星球本体约占图宽 58% */
+    }
+    .planet img {
+      display: block;
+      width: 100%;
+      height: auto;
+      mix-blend-mode: screen;   /* 与首屏星空融成一片 */
+
+      /* 两个互不干扰的动画：
+         planetFloat 用 transform 做上下浮动，planetOrbit 用独立的 translate 属性做轨道摆动。
+         两者都必须挂在 <img> 这一层，绝不能上移到 .planet 容器上：
+         transform / translate / filter / opacity 都会创建层叠上下文，一旦加到 .planet 上，
+         .planet img 的 mix-blend-mode: screen 就失去「舞台星空」这层混合背板，星球图的黑色底会显形。
+         实测同一张截图、同一阈值：位移挂在 <img> 上 = 黑方块边缘长直线 0 条；
+         挂到 .planet 上用 translate = 2 条（68~69px）、用 transform = 2 条（59~65px）。
+         标签要跟着一起动，用的是「把同样的位移镜像到 .planet-label 上」的办法，详见下方标签那段 */
+      animation-name: planetFloat, planetOrbit;
+      will-change: transform, translate;
+      /* hover 放大 / 按下收缩 / 点击提亮共用这一条过渡。
+         150ms 落在要求的 120~200ms 区间内，缓动带回弹手感 */
+      transition:
+        scale 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+        filter 0.15s ease;
+    }
+
+    /* 兜底：宇航员 + 四颗星球统一加一圈边缘渐隐。
+       万一个别图边缘还残留极淡的方形痕迹，用圆形遮罩把四角抹掉，
+       保证它们彻底融进容器那一层星空里（星球本体都在 62% 实心区内，不受影响） */
+    .astronaut,
+    .planet img {
+      mask-image: radial-gradient(circle at 50% 50%, #000 62%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 62%, transparent 100%);
+    }
+    /* 上下浮动：幅度只有 ±3px、周期 14~20s —— 慢到几乎察觉不到，只让画面在“轻轻呼吸”。
+       四颗星球用不同时长 + 负延迟（错相位），避免整齐划一 */
+    @keyframes planetFloat {
+      0%, 100% { transform: translateY(-3px); }
+      50%      { transform: translateY(3px); }
+    }
+
+    /* 轨道摆动：沿“以舞台中心为圆心的切线方向”小幅往复（不是整圈旋转）。
+       只改变位置、不旋转图片本身，所以像素画不会糊、标签也始终正立可读；
+       因为走的是切线，星球到中心的距离几乎不变，也就不会压住中间的宇航员。
+       周期 22~29s（都 ≥20s）且各自负延迟，四条轨道永远错开、不会整齐划一 */
+    @keyframes planetOrbit {
+      0%, 100% { translate: calc(-1 * var(--orbit-x)) calc(-1 * var(--orbit-y)); }
+      50%      { translate: var(--orbit-x) var(--orbit-y); }
+    }
+
+    /* 标签用的上下浮动：数值和 planetFloat 完全一致（±3px），只是改走独立的 translate 属性。
+       因为 .planet-label 的 transform 已经被“水平居中”占用（translateX(-50%)），
+       两者必须分属不同属性通道，否则会互相覆盖 */
+    @keyframes planetFloatLabel {
+      0%, 100% { translate: 0 -3px; }
+      50%      { translate: 0 3px; }
+    }
+
+    /* 标签用的轨道摆动：位移改用 left / top 承载。
+       原因：img 上的 translate: 35.2% 是相对“img 自身尺寸”的百分比，
+       而 .planet-label 的尺寸和 img 不一样，套用同一个百分比会算出不同的像素，标签就会跟不上星球。
+       left / top 的百分比基准是包含块（= .planet，它的高度正好被 .planet img 撑成和图片一样高），
+       所以 calc(50% + var(--orbit-x)) / calc(100% + var(--orbit-y)) 与 img 的位移逐像素相等。
+       只改位置、不做任何旋转，标签始终水平正立可读 */
+    @keyframes planetLabelOrbit {
+      0%, 100% { left: calc(50% - var(--orbit-x)); top: calc(100% - var(--orbit-y)); }
+      50%      { left: calc(50% + var(--orbit-x)); top: calc(100% + var(--orbit-y)); }
+    }
+    /* 两个动画的时长/延迟统一由 .planet-* 上的 CSS 变量给出（第 1 个浮动、第 2 个摆动），
+       星球本体和文字标签共用同一组变量 —— 这样「标签跟着星球动」永远不会出现两者周期对不上 */
+    .planet img,
+    .planet .planet-label {
+      animation-duration: var(--float-dur), var(--orbit-dur);
+      animation-delay: var(--float-delay), var(--orbit-delay);
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    /* 四角定位：彼此不重叠，也不压住中间的宇航员。
+       后面的 --orbit-x / --orbit-y 是“绕舞台中心 ±12°”沿切线方向分解出的位移，
+       已经按各自图片的宽高比换算成百分比（详见 .planet 里的说明）。
+       --float-dur / --float-delay 是上下浮动的时长与负延迟：周期从原来的 7.2~9.4s
+       放慢到 14~20s，四条相位仍然错开（负延迟各约占自身周期的 7% / 27% / 53% / 70%），
+       不会整齐划一地一起呼吸 */
+    .planet-about    { top: 2%;    left: 0;   --orbit-x:  35.2%; --orbit-y: -37.1%; --ring-inset: 6%;
+                       --float-dur: 14s;   --float-delay: -1s;  --orbit-dur: 22s; --orbit-delay: -1.5s; }
+    .planet-projects { top: 0;     right: 2%; --orbit-x:  37.1%; --orbit-y:  39.1%;
+                       --float-dur: 16.5s; --float-delay: -4.5s; --orbit-dur: 26s; --orbit-delay: -7.5s; }
+    .planet-avatar   { bottom: 14%; left: 2%; --orbit-x: -23.8%; --orbit-y: -39.1%;
+                       --float-dur: 18s;   --float-delay: -9.5s; --orbit-dur: 24s; --orbit-delay: -12s; }
+    .planet-contact  { bottom: 10%; right: 0; --orbit-x: -27.6%; --orbit-y:  41.2%;
+                       --float-dur: 20s;   --float-delay: -14s; --orbit-dur: 29s; --orbit-delay: -18s; }
+
+    /* 星球文字标签：浅色 + 发光 + 半透明胶囊底衬 */
+    .planet-label {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      margin-top: 6px;
+      padding: 4px 13px;
+      border-radius: 999px;
+      white-space: nowrap;
+      background: rgba(9, 13, 28, 0.62);
+      border: 1px solid rgba(147, 197, 253, 0.22);
+      color: #e8eefc;
+      font-size: 0.86rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow:
+        0 0 10px rgba(147, 197, 253, 0.75),
+        0 0 22px rgba(96, 165, 250, 0.35);
+      pointer-events: none;     /* 标签不挡住星球的点击 */
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+
+      /* 让标签跟着星球一起动：这里只点名两个动画，时长/延迟由上面
+         「.planet img, .planet .planet-label」那条共享规则从 .planet-* 的变量里统一取。
+         三个属性通道各管各的、互不覆盖：
+           ① transform: translateX(-50%) —— 水平居中，静态保留不动；
+           ② translate —— 上下浮动（planetFloatLabel，±3px）；
+           ③ left / top —— 轨道摆动（planetLabelOrbit，百分比基准与 img 严格等价）。
+         连 rotate 都没用到，所以标签永远不会被转，文字始终水平正立 */
+      animation-name: planetFloatLabel, planetLabelOrbit;
+    }
+
+    /* 悬停 / 键盘聚焦：高亮放大。
+       放大用独立的 scale 属性，和 img 上做浮动动画的 transform 互不冲突 */
+    .planet:hover img,
+    .planet:focus-visible img { scale: 1.08; }
+
+    .planet:hover .planet-label,
+    .planet:focus-visible .planet-label {
+      color: #ffffff;
+      border-color: rgba(147, 197, 253, 0.60);
+      background: rgba(9, 13, 28, 0.80);
+    }
+    .planet:focus-visible {
+      outline: 2px solid rgba(147, 197, 253, 0.85);
+      outline-offset: 6px;
+    }
+
+    /* 当前所在板块对应的星球：放大 + 更亮的辉光 */
+    .planet.is-active img {
+      scale: 1.12;
+      filter: drop-shadow(0 0 16px rgba(147, 197, 253, 0.75));
+    }
+    .planet.is-active .planet-label {
+      color: #ffffff;
+      border-color: rgba(147, 197, 253, 0.75);
+      background: rgba(9, 13, 28, 0.85);
+    }
+
+    /* 点击反馈①：按下的瞬间收缩。
+       —— 放在 .is-active 后面，是为了同特异性下“按下”能压过“当前板块放大”，
+          否则正在浏览的那个星球按下去反而没有收缩感。
+       —— scale 用独立属性，和 img 上跑着的 transform / translate 两个动画互不覆盖 */
+    .planet:active img { scale: 0.9; }
+
+    /* 点击反馈②：一圈扩散波纹。
+       圆环用 border 画、中间镂空，避免实心填充盖住星球本体；
+       inset 往里收一圈，让它贴合星球实际轮廓而不是图片边框 */
+    .planet::after {
+      content: "";
+      position: absolute;
+      inset: var(--ring-inset);
+      border-radius: 50%;
+      border: 2px solid rgba(147, 197, 253, 0.85);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.85);
+    }
+    /* 类名由 JS 在点击 / 键盘 Enter 触发时挂上、动画播完再摘掉。
+       不直接用 :active 的原因：鼠标快速点击时 :active 只存在几十毫秒，
+       波纹会被中途掐断，看不到完整一圈 */
+    .planet.is-rippling::after { animation: planetRipple 0.5s ease-out; }
+    @keyframes planetRipple {
+      0%   { opacity: 0.9; transform: scale(0.85); }
+      100% { opacity: 0;   transform: scale(1.6);  }
+    }
+
+    /* 点击反馈③：短暂提亮 + 辉光脉冲，同样由 JS 在约 0.5s 后摘掉类。
+       写在这里而不是用 animation，是为了不覆盖 img 上那两个动画的时长/延迟列表 */
+    .planet.is-rippling img {
+      filter: brightness(1.35) drop-shadow(0 0 16px rgba(147, 197, 253, 0.9));
+    }
+
+    /* ---------- 10.5 首屏深色 → 下方浅色 的渐变过渡带 ---------- */
+    .space-fade {
+      height: 150px;
+      /* 起点接首屏底边收敛后的纯底色 #060d20，终点接「关于我」那一块最上面
+         的深空色（那张星空地表被压暗后的近黑蓝）。首屏那层星云/辉光已在底边前
+         淡出，所以这里仍然是真正的无级过渡 */
+      background: linear-gradient(180deg, #060d20 0%, #05070f 100%);
+    }
+
+    /* ---------- 10.6 顶部导航：首屏隐藏，滚离首屏后滑入 ---------- */
+    .navbar {
+      transform: translateY(-100%);           /* 默认藏在屏幕上方 */
+      background: rgba(9, 13, 28, 0.74);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(147, 197, 253, 0.16);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35);
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+    }
+    .navbar.is-visible { transform: translateY(0); }   /* JS 加上这个类后滑入 */
+
+    .navbar .logo { color: #eef3ff; }
+    .navbar .logo .dot { color: #93c5fd; }
+    .navbar .nav-links a { color: #cfdcf5; }
+    .navbar .nav-links a:hover {
+      background: rgba(147, 197, 253, 0.14);
+      color: #ffffff;
+    }
+
+    /* ---------- 10.7 数字分身板块：圆形头像 ---------- */
+    .twin-avatar {
+      display: block;
+      width: 112px;                /* 控制在 96~128px，不抢主体 */
+      height: 112px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 38%;
+      border: 4px solid #ffffff;
+      outline: 1px solid var(--border);
+      box-shadow: 0 14px 34px rgba(37, 99, 235, 0.22);
+    }
+
+    /* ---------- 10.8 太空主题的响应式 ---------- */
+    /* 平板/窄屏：首屏改上下堆叠，星球整体缩小但不与宇航员重叠 */
+    @media (max-width: 920px) {
+      .hero { padding: 108px 20px 72px; }
+      .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+      }
+      .hero-text {
+        flex: 0 1 auto;
+        max-width: 620px;
+        margin: 0 auto;
+      }
+      .hero-actions,
+      .hero-tags { justify-content: center; }
+      .hero h1 { font-size: 2.6rem; letter-spacing: 4px; }
+      .hero-stage {
+        flex: 0 1 auto;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .twin-avatar { width: 96px; height: 96px; }
+    }
+
+    /* 手机：进一步缩小星球舞台，保证四颗星球仍可点、不重叠 */
+    @media (max-width: 640px) {
+      .hero { padding: 96px 16px 60px; }
+      .hero h1 { font-size: 2.15rem; letter-spacing: 3px; }
+      .hero-stage { max-width: 320px; }
+      .planet { width: 20%; }
+      .planet-avatar { bottom: 16%; }
+      .planet-label {
+        font-size: 0.75rem;
+        padding: 3px 10px;
+        letter-spacing: 0.5px;
+      }
+      .space-fade { height: 110px; }
+
+      .nav-links { gap: 1px; }
+      .nav-links a { padding: 6px 8px; font-size: 0.82rem; }
+      .nav-btn { padding: 7px 14px; font-size: 0.82rem; }
+    }
+
+    /* 无障碍：系统开启"减弱动态效果"时，关停页面上所有动画与过渡。
+       这里刻意用“兜底”写法而不是逐个列元素的白名单 —— 白名单每加一个新动画就要
+       记得回来补一笔，漏一个就失效；兜底写法对以后新增的动画/过渡同样生效。
+       用 0.01ms 而不是 animation: none，是因为 animation: none 会让 animationend
+       事件永远不触发，万一有代码在等它就会卡住；把时长压到近乎 0 更安全 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      /* 悬停 / 键盘聚焦 / 按下 / 当前板块 这四种“放大态”一并复位成原始大小。
+         原来漏了 :active，减弱动态效果下点击仍会突然收缩一下 */
+      .planet:hover img,
+      .planet:focus-visible img,
+      .planet:active img,
+      .planet.is-active img { scale: 1; }
+
+      html { scroll-behavior: auto; }
+    }
+
+    /* =========================================================
+       星球飞入过渡（demo：仅「关于我」这一颗）
+       ---------------------------------------------------------
+       流程：点击星球
+             → 把星球图克隆一份、按原位原尺寸固定在屏幕上
+             → 克隆体放大并移到屏幕中心，直到铺满整屏（像迅速贴近星球表面）
+             → 交叉过渡：「关于我」切成全屏视图，背景是该星球放大模糊后的氛围底
+             → 板块内容逐条浮现
+       返回：左上角按钮 / Esc / 浏览器后退，反向淡出。
+       其它三颗星球维持原来的平滑滚动，不受影响。
+       ========================================================= */
+
+    /* 像素传送门：一块覆盖整屏的低分辨率 canvas。
+       逻辑像素约 4 CSS px 一块，再用 image-rendering: pixelated 放大成大方块 ——
+       这样每一格都是正方的，不会因为亚像素错位糊成一片。
+       z-index 故意比全屏「关于我」(900) 还高：白闪最亮的时候背景已经在门后铺好了，
+       再把那点白"化"掉就是一次干净的转场，中间没有可辨认的切换点。 */
+    .portal-fx {
+      position: fixed;
+      z-index: 950;
+      pointer-events: none;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: pixelated;
+    }
+
+    /* 飞行期间锁住底层页面，避免背景跟着滚。
+       同时把 body 底色从米白 #faf9f6 换成深空色 —— 首屏淡出后露出的是 body 底色，
+       不换的话整屏会瞬间变成一片米白，这就是之前"白光晃眼"的根因 */
+    body.view-locked { overflow: hidden; background: #05070f; }
+    body.view-locked .navbar { opacity: 0; pointer-events: none; }
+
+    /* =========================================================
+       板块背景：正常往下翻时的四块（关于我 / 项目 / 数字分身 / 联系我）
+       ========================================================= */
+    /* 四块平时就是页面流里的普通板块，这里给它们铺上「自己那颗星球」的
+       贴地视角星空地表 —— 和全屏视图用的是同一批图，所以往下翻到底看到的
+       和点星球进去的是同一个星球、同一种构图（弧形地平线压在画面下三分之一，
+       上方大片深空）。图片锚定在视口上（background-attachment: fixed）：
+       板块下半段在屏幕上时地平线浮现在屏幕下方，上半段在屏幕上时是纯星空，
+       往下翻就有"缓缓降落到地表"的视差感。
+       同时在这一层换掉整套颜色变量（--surface / --bg / --border / --text …），
+       于是卡片、描边、正文自动变成"深空里的玻璃卡片"，不用逐条覆盖选择器。
+       --primary 故意不动：发送按钮还要靠它做蓝色实底（浅蓝配白字会看不清） */
+    .view-panel {
+      --surface: rgba(9, 13, 28, 0.62);
+      --bg: rgba(5, 7, 15, 0.58);
+      --bg-soft: transparent;
+      --border: rgba(147, 197, 253, 0.22);
+      --text: #eaf1ff;
+      --text-muted: #c3cee6;
+      --shadow: 0 18px 40px rgba(2, 6, 20, 0.55);
+      background-color: #05070f;    /* 图没加载出来时的兜底深空色 */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    /* 每块对应的星球地表图。写成变量是因为同一张图要用在两个地方：
+       正常滚动时的板块底色，以及全屏视图里那层 .view-bg（见下方） */
+    #about    { --panel-bg: url(12-space-about-surface-web.png); }
+    #projects { --panel-bg: url(20-space-projects-surface-web.png); }
+    #avatar   { --panel-bg: url(21-space-avatar-surface-web.png); }
+    #contact  { --panel-bg: url(22-space-contact-surface-web.png); }
+
+    /* 底图之上压两层渐变：一层把整屏压暗到正文可读，一层是 135° 暗角，
+       专门盖掉生成图右下角的 "DeepWorks AI" 水印。
+       :not(.is-fullscreen) 是为了不干扰全屏视图 —— 全屏时背景交回 .view-bg 处理 */
+    #about:not(.is-fullscreen),
+    #projects:not(.is-fullscreen),
+    #avatar:not(.is-fullscreen),
+    #contact:not(.is-fullscreen) {
+      background-image:
+        linear-gradient(180deg, rgba(5, 7, 15, 0.80) 0%, rgba(5, 7, 15, 0.64) 46%, rgba(5, 7, 15, 0.78) 100%),
+        linear-gradient(135deg, rgba(5, 7, 15, 0) 62%, rgba(5, 7, 15, 0.92) 100%),
+        var(--panel-bg);
+    }
+
+    /* 深底上蓝色小字会糊，这几处单独提亮（只改颜色，不动背景和排版） */
+    .view-panel .project-meta,
+    .view-panel .info-row b,
+    .view-panel .chat-msg.bot .msg-role,
+    .view-panel .contact-card:hover { color: #93c5fd; }
+    /* 项目小标签平时靠 --bg-soft 衬底，上面把它清成透明了，这里补一层淡蓝 */
+    .view-panel .project-meta { background: rgba(147, 197, 253, 0.14); }
+    /* 头像原来是 4px 纯白描边，深底上太扎眼，改成淡蓝 */
+    .view-panel .twin-avatar { border-color: rgba(147, 197, 253, 0.45); }
+
+    /* =========================================================
+       全屏视图（四颗星球共用）
+       ========================================================= */
+    /* 注意：平时它们仍是页面流里的普通板块（position 不变），
+       只有加上 .is-fullscreen 才浮起来铺满视口，所以点击导航栏、
+       锚点滚动这些原有行为完全不受影响 */
+    .view-panel.is-fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      overflow-x: hidden;
+      overflow-y: auto;
+      /* 关键：全屏层必须是不透明的深空底。四块自己现在也带一层背景图
+         （见上方「板块背景」），全屏时若不压住它，两层图会叠出重影；
+         而且传送门化开的那半秒里屁股后面不能漏出页面上别的板块。
+         真正的背景图由 .view-bg 在这块底色之上淡入 */
+      background: #05070f;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .view-panel.is-fullscreen.is-open { opacity: 1; }
+
+    /* 配色变量（--surface / --bg / --bg-soft / --border / --text / --text-muted /
+       --shadow）已经在上面「板块背景」的 .view-panel 里换成深空那套了，
+       全屏视图继承同一套变量，所以这里不用再重复定义一遍 */
+
+    /* 氛围背景层：每块铺「自己那颗星球」的贴地视角星空地表。
+       四张图是同一套做法生成的（拿卡片上那颗星球 → 重绘成贴着球面的第一人称视角：
+       同样弧形地平线压在画面下三分之一，上方大片深空留白），所以四块全屏视图
+       观感完全一致，只是各自带着自己星球的颜色：
+       「关于我」深蓝、项目青绿、数字分身紫、联系我橙红 */
+    .view-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      filter: blur(1.5px) saturate(1) brightness(0.72);
+      transition: opacity 1s ease, visibility 1s;
+    }
+    .view-panel.is-fullscreen .view-bg { visibility: visible; }
+    .view-panel.is-fullscreen.is-open .view-bg { opacity: 1; }
+
+    /* 四块各自的星球地表由上面 #about/#projects/#avatar/#contact 上的
+       --panel-bg 提供 —— 板块底色和这层全屏氛围图用的是同一张图 */
+    #about .view-bg,
+    #projects .view-bg,
+    #avatar .view-bg,
+    #contact .view-bg { background-image: var(--panel-bg); }
+
+    /* 背景之上压一层深色渐变：压暗到正文可读，同时盖掉生成图右下角的水印 */
+    .view-panel.is-fullscreen .view-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(5, 7, 15, 0.42) 0%, rgba(5, 7, 15, 0.62) 50%, rgba(5, 7, 15, 0.88) 100%),
+        linear-gradient(135deg, rgba(5, 7, 15, 0) 68%, rgba(5, 7, 15, 0.85) 100%),
+        radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.14), transparent 60%);
+    }
+
+    /* 内容层压在背景之上 */
+    .view-panel.is-fullscreen .container { position: relative; z-index: 1; }
+
+    /* 返回按钮：只在全屏视图出现（四块各有一个，各自只在自己那块显示） */
+    .view-back { display: none; }
+    .view-panel.is-fullscreen .view-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: fixed;
+      top: 22px;
+      left: 22px;
+      z-index: 950;
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: rgba(9, 13, 28, 0.72);
+      border: 1px solid rgba(147, 197, 253, 0.38);
+      color: #e8eefc;
+      font-size: 0.9rem;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .view-panel.is-fullscreen .view-back:hover {
+      background: rgba(147, 197, 253, 0.20);
+      border-color: rgba(147, 197, 253, 0.75);
+    }
+    .view-panel.is-fullscreen .view-back:focus-visible {
+      outline: 2px solid rgba(147, 197, 253, 0.85);
+      outline-offset: 4px;
+    }
+
+    /* 内容浮现：先隐身并下移，进入全屏后逐条升起。
+       想错开先后顺序，就在那个元素上写 style="--rise:.22s"，
+       不写就用默认的 0.12s（「关于我」四条的 0.10/0.22/0.34/0.46 写在 HTML 上） */
+    @keyframes viewRise {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .view-panel.is-fullscreen .view-rise {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    .view-panel.is-fullscreen.is-open .view-rise {
+      animation: viewRise 0.62s ease forwards;
+      animation-delay: var(--rise, 0.12s);
+    }
+
+    /* 卡片（Bento 格 / 头像框 / 聊天框 / 信息块 / 项目卡 / 联系卡）改成深色玻璃质感，
+       让它和身后的星空地表连成一体 —— 正常滚动和全屏视图共用同一套，两边观感一致。
+       底色和描边不用在这里写死：上面「板块背景」里换过的 --surface / --border 已经管到了，
+       这里只补一层背景模糊，让卡片后面透出星空与地表的柔光 */
+    .view-panel .about-tile,
+    .view-panel .avatar-wrap,
+    .view-panel .chat-box,
+    .view-panel .info-block,
+    .view-panel .project-card,
+    .view-panel .contact-card {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .view-panel .about-tile h3 { color: #eaf1ff; }
+    .view-panel .about-tile p,
+    .view-panel .resume-row { color: #c3cee6; }
+    .view-panel .about-tag {
+      background: rgba(147, 197, 253, 0.14);
+      border-color: rgba(147, 197, 253, 0.30);
+      color: #dbe6fb;
+    }
+    .view-panel .section-title { color: #f2f6ff; }
+    .view-panel .section-subtitle { color: #c3cee6; }
+    .view-panel .section-eyebrow { color: #93c5fd; }
+
+    /* ?motion=on 调试用：系统关了动画时强制恢复这几条过渡的时长。
+       刻意只列"视图过渡"相关选择器，不去动星球原有的缓慢漂浮，
+       否则那些 14~22s 的动画会被压成 0.6s 疯狂抖动 */
+    html.force-motion .view-panel.is-fullscreen { transition-duration: 1s !important; }
+    html.force-motion .view-panel.is-fullscreen .view-bg { transition-duration: 1s !important; }
+    html.force-motion .view-panel.is-fullscreen.is-open .view-rise { animation-duration: 0.62s !important; }
+    /* 传送门（.portal-fx 那层 canvas）不用在这里补时长：它是 JS 逐帧画出来的，
+       本来就不走 CSS 过渡；只有最后化开那一下的 opacity 是 CSS 过渡 */
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+      固定导航栏
+      ========================================================= -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <!-- logo：名字 + 橙色圆点 -->
+      <div class="logo">李宸谊<span class="dot">.</span></div>
+      <ul class="nav-links">
+        <li><a href="#home">首页</a></li>
+        <li><a href="#about">关于我</a></li>
+        <li><a href="#projects">项目</a></li>
+        <!-- 新增：数字分身入口，平滑滚动到下方 id="avatar" 区块 -->
+        <li><a href="#avatar">数字分身</a></li>
+        <li><a href="#contact">联系我</a></li>
+      </ul>
+      <!-- 右侧实心蓝按钮：滚动到联系我 -->
+      <a class="nav-btn" href="#contact">联系我</a>
+    </div>
+  </nav>
+
+  <!-- =========================================================
+      Hero 首屏区：左侧文字 + 右侧星空导航（宇航员 + 四颗星球）
+      ========================================================= -->
+  <header id="home" class="hero">
+    <!-- 星空背景层：纯装饰，不接收鼠标事件 -->
+    <div class="starfield" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+
+      <!-- 左侧：文字区 -->
+      <div class="hero-text">
+        <!-- 问候语：小标签 -->
+        <span class="hero-hello"><span class="ball"></span> Hello, Nice to Meet You</span>
+
+        <!-- 名字 -->
+        <h1>李宸谊<span class="accent">.</span></h1>
+
+        <!-- 一句话定位：真实、不夸大 -->
+        <p class="hero-tagline">计算机大一学生，热爱前端开发。<br>正在把每一个想法，变成看得见、摸得着的页面。</p>
+
+        <!-- 身份/兴趣标签胶囊 -->
+        <div class="hero-tags">
+          <span class="hero-tag"># 热爱学习</span>
+          <span class="hero-tag">📍 深圳</span>
+        </div>
+
+        <!-- 双按钮：实心主按钮 + 描边次按钮 -->
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">查看我的项目 →</a>
+          <a href="#contact" class="btn-outline">联系我</a>
+        </div>
+      </div>
+
+      <!-- 右侧：星空导航（中心宇航员 + 环绕的四颗星球） -->
+      <div class="hero-stage">
+
+        <!-- 【宇航员】：纯装饰。不可点击、不可键盘聚焦、不响应悬停。
+             图自带深色星空底，用 mix-blend-mode: screen 融进首屏那一层统一星空 -->
+        <img class="astronaut" src="04-pixel-astronaut-web.png" alt="" aria-hidden="true" />
+
+        <!-- 四颗星球 = 四个板块入口。用 <a href="#id"> 做锚点，
+             点击后由 JS 平滑滚动到对应板块；支持 Tab 聚焦 + Enter 触发。
+             四张图统一是纯黑底 + mix-blend-mode: screen，黑底透明后与容器星空连成一片 -->
+        <a class="planet planet-about" href="#about">
+          <!-- 关于我星球：用 09（纯黑底、无自带背景）替换掉原来的 02，
+               原 02 自带一整片蓝绿色星空，会和页面星空撞色、露出方形边框 -->
+          <img src="09-planet-about-web.png" alt="" aria-hidden="true" />
+          <span class="planet-label">关于我</span>
+        </a>
+
+        <a class="planet planet-projects" href="#projects">
+          <img src="06-planet-projects-web.png" alt="" aria-hidden="true" />
+          <span class="planet-label">项目</span>
+        </a>
+
+        <a class="planet planet-avatar" href="#avatar">
+          <img src="07-planet-avatar-web.png" alt="" aria-hidden="true" />
+          <span class="planet-label">数字分身</span>
+        </a>
+
+        <a class="planet planet-contact" href="#contact">
+          <img src="08-planet-contact-web.png" alt="" aria-hidden="true" />
+          <span class="planet-label">联系我</span>
+        </a>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 首屏深色 → 下方浅色板块 的柔和过渡带（纯装饰） -->
+  <div class="space-fade" aria-hidden="true"></div>
+
+  <!-- =========================================================
+      关于我（Bento 网格：简历整行 / 爱好两列 / 性格一列）
+      ========================================================= -->
+  <section id="about" class="about view-panel">
+    <!-- 氛围背景层：只在切进全屏视图时显示（四块板块各有一层，铺自己的星球图） -->
+    <div class="view-bg" aria-hidden="true"></div>
+    <!-- 返回按钮：只在全屏视图里出现 -->
+    <button class="view-back" type="button" id="viewBack">← 返回首页</button>
+    <div class="container">
+      <div class="section-header view-rise" style="--rise:.10s">
+        <span class="section-eyebrow">About Me</span>
+        <h2 class="section-title">关于我</h2>
+        <p class="section-subtitle">一屏读懂我：简历、爱好与性格</p>
+      </div>
+
+      <!-- Bento 子板块网格（桌面三列；平板两列、手机单列自动重排） -->
+      <div class="about-grid">
+
+        <!-- ① 简历展示：占满整行，内部再分左右两栏 -->
+        <div class="about-tile about-resume view-rise" style="--rise:.22s">
+          <h3>简历展示</h3>
+          <div class="about-resume-cols">
+            <div class="about-resume-col">
+              <p class="resume-row"><b>教育背景：</b>天津大学香港理工大学深圳未来技术学院 · 计算机科学与技术专业 · 2026 级</p>
+              <p class="resume-row"><b>技能栈：</b>HTML / CSS / JavaScript 基础，正在系统学习前端开发</p>
+            </div>
+            <div class="about-resume-col">
+              <p class="resume-row"><b>学习经历：</b>入学后用课余时间自学前端开发，从 HTML 语义化标签起步，逐步掌握 CSS 布局与响应式设计，并独立完成了本站（个人主页）的搭建与样式调试；目前正在补 JavaScript 基础，下一步计划做出带接口调用的交互小工具。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ② 个人爱好：占左侧两列 -->
+        <div class="about-tile about-hobby view-rise" style="--rise:.34s">
+          <h3>个人爱好</h3>
+          <p>课余喜欢打排球和羽毛球，享受和同学在球场上配合的感觉；也爱读悬疑推理类小说，喜欢跟着线索一起推演真相。</p>
+          <div class="about-tags">
+            <span class="about-tag">排球</span>
+            <span class="about-tag">羽毛球</span>
+            <span class="about-tag">悬疑推理文学</span>
+          </div>
+        </div>
+
+        <!-- ③ 性格特点：只占最右一列 -->
+        <div class="about-tile about-trait view-rise" style="--rise:.46s">
+          <h3>性格特点</h3>
+          <p>性格开朗热情，也乐于帮助身边的人。</p>
+          <p>喜欢自己动手，把想法做成贴合自己需要的工具或程序。</p>
+          <div class="about-tags">
+            <span class="about-tag">开朗热情</span>
+            <span class="about-tag">乐于助人</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+      项目 / 作品
+      ========================================================= -->
+  <section id="projects" class="projects view-panel">
+    <!-- 氛围背景层 + 返回按钮：全屏视图专用（背景就是这颗星球自己的画面，放大后重模糊） -->
+    <div class="view-bg" aria-hidden="true"></div>
+    <button class="view-back" type="button">← 返回首页</button>
+    <div class="container">
+      <div class="section-header view-rise" style="--rise:.10s">
+        <span class="section-eyebrow">My Projects</span>
+        <h2 class="section-title">项目 · 作品</h2>
+        <p class="section-subtitle">几件正在慢慢做的小作品</p>
+      </div>
+
+      <div class="projects-grid view-rise" style="--rise:.24s">
+        <!-- 第 1 个项目：复制整块 <article> 就能新增 -->
+        <article class="project-card">
+          <!-- 封面：现在是“占位渐变 + 图标”。以后有真实截图，把下面整块替换成
+               <img class="project-thumb" src="天气查询小工具.png" alt="天气查询小工具" style="object-fit: cover;" /> -->
+          <div class="project-thumb tint-blue">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <span class="thumb-label">Weather App</span>
+          </div>
+          <div class="project-body">
+            <span class="project-meta">前端练习 · 接口调用</span>
+            <!-- 项目名 + 一句话描述 -->
+            <h3>天气查询小工具</h3>
+            <p>用 JavaScript 调用公开天气接口，输入城市就能查看当天的温度与天气概况，练手接口请求和数据处理。</p>
+          </div>
+        </article>
+
+        <!-- 第 2 个项目 -->
+        <article class="project-card">
+          <!-- 有真实截图时，同样把整块占位替换成 <img>（参考上面） -->
+          <div class="project-thumb tint-cyan">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="thumb-label">Todo App</span>
+          </div>
+          <div class="project-body">
+            <span class="project-meta">前端练习 · 增删改查</span>
+            <h3>待办清单 App</h3>
+            <p>用 JavaScript 实现任务的添加、完成与删除，窗口关闭后也能保存，是一次完整的增删改查练习。</p>
+          </div>
+        </article>
+
+        <!-- 第 3 个项目 -->
+        <article class="project-card">
+          <!-- 有真实截图时，同样把整块占位替换成 <img>（参考上面） -->
+          <div class="project-thumb tint-indigo">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span class="thumb-label">Blog</span>
+          </div>
+          <div class="project-body">
+            <span class="project-meta">页面搭建 · 静态文章页</span>
+            <h3>个人博客</h3>
+            <p>用纯 HTML / CSS 搭建的文章页面，记录我学习过程中的笔记、总结与一些小想法。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+      数字分身（前端先行 · 数据占位 · 功能开发中）
+      【数据接入区】说明：
+      目前下面所有内容都是"占位/演示数据"，用于先让界面正常显示。
+      等数据库和「数字分身 API」建好后，只需把标注了「数据接入区」的占位内容，
+      替换成从接口 / 数据库读取的真实数据即可，前端结构不用重做。
+      ========================================================= -->
+  <section id="avatar" class="avatar-stage view-panel">
+    <!-- 氛围背景层 + 返回按钮：全屏视图专用（背景就是这颗星球自己的画面，放大后重模糊） -->
+    <div class="view-bg" aria-hidden="true"></div>
+    <button class="view-back" type="button">← 返回首页</button>
+    <div class="container">
+      <div class="section-header view-rise" style="--rise:.10s">
+        <span class="section-eyebrow">Digital Twin</span>
+        <h2 class="section-title">数字分身</h2>
+        <p class="section-subtitle">一个正在搭建中的“虚拟的我”，以后陪你聊聊</p>
+      </div>
+
+      <div class="avatar-wrap view-rise" style="--rise:.24s">
+
+        <div class="avatar-grid">
+
+          <!-- ========== 左侧：形象展示区 ========== -->
+          <div class="avatar-figure">
+            <!-- 【数据接入区 · 形象】：
+                 现在是真实形象图（像素风头像，圆形裁切）。
+                 以后接口建好，把 src 换成 avatar_url 即可，前端结构不用改。 -->
+            <img class="twin-avatar" src="01-pixel-portrait-web.png" alt="李宸谊的数字分身形象" />
+
+            <!-- 功能状态徽标：明确告知访客“这是在建的功能” -->
+            <div class="stage-status">
+              <span class="pulse"></span> 功能开发中 · 数字分身接入中
+            </div>
+          </div>
+
+          <!-- ========== 右侧：对话 / 互动区 + 占位数据区 ========== -->
+          <div class="avatar-panel">
+
+            <!-- 对话 / 互动区：目前是假交互（前端占位），不硬接真实 AI -->
+            <div class="chat-box" id="chatBox">
+              <!-- 【数据接入区 · 对话】：下面这两个气泡目前是演示文案。
+                   以后应改为从「数字分身 API」读取真实回答。
+                   接口字段建议：user_question（用户问题）、assistant_reply（分身回复） -->
+              <div class="chat-msg bot">
+                <span class="msg-role">数字分身</span>
+                <span class="msg-text">嗨，我是李宸谊的数字分身。等我接入完成后，就能回答你的提问啦~</span>
+              </div>
+              <div class="chat-msg bot">
+                <span class="msg-role">数字分身</span>
+                <span class="msg-text">系统构建中，目前还不能真正对话哦。😉</span>
+              </div>
+            </div>
+
+            <!-- 输入区：输入框 + 发送按钮（点击后只提示“构建中”，不发真实请求） -->
+            <div class="chat-input-row">
+              <input id="chatInput" class="chat-input" type="text" placeholder="想问数字分身点什么？（功能开发中）" />
+              <button id="chatSend" class="chat-send" type="button">发送</button>
+            </div>
+
+            <!-- 占位数据区：基础信息 + FAQ（全部为占位数据） -->
+            <div class="avatar-info">
+
+              <!-- 基础信息 -->
+              <div class="info-block">
+                <h4>基础信息</h4>
+                <!-- 【数据接入区 · 基础信息】：
+                     下面每一行都是占位值，接口 / 数据库建好后替换为真实字段。 -->
+                <div class="info-row"><b>姓名：</b>李宸谊</div>
+                <div class="info-row"><b>方向：</b>计算机大一学生 · 前端开发</div>
+                <div class="info-row"><b>简介：</b>喜欢自己动手，把想法做成真正能用的程序。</div>
+                <div class="info-row"><b>联系：</b>邮箱 2795324900@qq.com · GitHub（稍后补充）</div>
+              </div>
+
+              <!-- 常被问到的问题 / FAQ -->
+              <div class="info-block">
+                <h4>常被问到</h4>
+                <!-- 【数据接入区 · FAQ】：
+                     下面配对是占位问答，接口 / 数据库建好后替换为真实 FAQ。
+                     接口字段建议：question（问题）、answer（回答） -->
+                <div class="faq-item">
+                  <div class="faq-q">你叫什么？</div>
+                  <div class="faq-a">我叫李宸谊，一名计算机大一学生。</div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q">你在学什么？</div>
+                  <div class="faq-a">前端开发，目前在学 JavaScript 与接口调用。</div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q">怎么联系你？</div>
+                  <div class="faq-a">可以发邮件到 2795324900@qq.com。</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+      联系我
+      ========================================================= -->
+  <section id="contact" class="contact view-panel">
+    <!-- 氛围背景层 + 返回按钮：全屏视图专用（背景就是这颗星球自己的画面，放大后重模糊） -->
+    <div class="view-bg" aria-hidden="true"></div>
+    <button class="view-back" type="button">← 返回首页</button>
+    <div class="container">
+      <div class="section-header view-rise" style="--rise:.10s">
+        <span class="section-eyebrow">Contact</span>
+        <h2 class="section-title">联系我</h2>
+        <p class="section-subtitle">欢迎来聊，随时找我</p>
+      </div>
+
+      <div class="contact-links view-rise" style="--rise:.24s">
+        <!-- 只有"邮箱"是当前真实可用的联系方式。
+             GitHub / 社交 还没有真实主页，先做成不可点击的占位卡片：
+             不再用 href="#"（点击会跳到页顶），也不再用无效占位地址（会打开错误页面）。
+             以后拿到真实地址，把
+             <span class="contact-card is-pending">…</span>
+             换回
+             <a class="contact-card" href="真实地址" target="_blank">…</a>
+             即可。 -->
+        <span class="contact-card is-pending">🔗 GitHub · 待补充</span>
+        <a class="contact-card" href="mailto:2795324900@qq.com">📧 邮箱</a>
+        <span class="contact-card is-pending">💬 社交 · 待补充</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+      页脚
+      ========================================================= -->
+  <footer class="footer">
+    © 2026 李宸谊<span class="dot"> · </span>由纯 HTML / CSS / JS 制作
+  </footer>
+
+  <!-- =========================================================
+       个人主页 V3 · 反馈入口（右下角按钮 + 表单浮层）
+       ========================================================= -->
+  <style>
+    /* 反馈入口：右下角胶囊按钮，避开回顶按钮 */
+    .fb-entry {
+      position: fixed; right: 22px; bottom: 84px; z-index: 60;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 16px; border-radius: 999px;
+      border: 1px solid rgba(147,197,253,.35);
+      background: rgba(9,13,28,.86);
+      color: #eaf1ff; font-size: 14px; cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    .fb-entry:hover { border-color: rgba(147,197,253,.7); color: #93c5fd; }
+
+    /* 表单浮层 */
+    .fb-mask {
+      position: fixed; inset: 0; z-index: 61;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(3,6,14,.72);
+    }
+    .fb-mask.is-open { display: flex; }
+    .fb-card {
+      width: min(92vw, 420px); max-height: 86vh; overflow: auto;
+      padding: 20px; border-radius: 16px;
+      border: 1px solid rgba(147,197,253,.22);
+      background: rgba(9,13,28,.96);
+      color: #eaf1ff; box-shadow: 0 18px 40px rgba(2,6,20,.55);
+    }
+    .fb-card h3 { margin: 0 0 4px; font-size: 17px; }
+    .fb-card .fb-hint { margin: 0 0 14px; font-size: 12px; color: #c3cee6; }
+    .fb-row { margin-bottom: 10px; }
+    .fb-row label { display: block; margin-bottom: 4px; font-size: 12px; color: #c3cee6; }
+    .fb-row input, .fb-row select, .fb-row textarea {
+      width: 100%; box-sizing: border-box; padding: 8px 10px;
+      border-radius: 9px; border: 1px solid rgba(147,197,253,.28);
+      background: rgba(5,7,15,.85); color: #eaf1ff; font: inherit; font-size: 14px;
+    }
+    .fb-row textarea { min-height: 88px; resize: vertical; }
+    .fb-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .fb-actions button {
+      flex: 1; padding: 10px; border-radius: 10px; font: inherit; font-size: 14px; cursor: pointer;
+      border: 1px solid rgba(147,197,253,.35); background: transparent; color: #c3cee6;
+    }
+    .fb-actions .fb-submit { border-color: transparent; background: #2f6bd8; color: #fff; }
+    .fb-actions .fb-submit[disabled] { opacity: .6; cursor: not-allowed; }
+    .fb-status { margin-top: 10px; font-size: 13px; min-height: 18px; }
+    .fb-status.is-ok { color: #86efac; }
+    .fb-status.is-err { color: #fca5a5; }
+  </style>
+
+  <button class="fb-entry" id="fbEntry" type="button">✉️ 提反馈</button>
+
+  <div class="fb-mask" id="fbMask">
+    <div class="fb-card" role="dialog" aria-label="给主页提反馈">
+      <h3>给主页提点意见</h3>
+      <p class="fb-hint">反馈不会公开，只有我能看到。</p>
+
+      <div class="fb-row">
+        <label for="fbName">名字或昵称（可不填）</label>
+        <input id="fbName" type="text" maxlength="30" placeholder="怎么称呼你" />
+      </div>
+
+      <div class="fb-row">
+        <label for="fbRelation">与主页主人的关系</label>
+        <select id="fbRelation">
+          <option value="">不选也行</option>
+          <option>同学</option><option>老师</option><option>家人</option>
+          <option>朋友</option><option>同事</option><option>其他</option><option>不便透露</option>
+        </select>
+      </div>
+
+      <div class="fb-row">
+        <label for="fbDevice">你用什么设备看的</label>
+        <select id="fbDevice">
+          <option value="">不选也行</option>
+          <option>电脑</option><option>手机</option><option>平板</option><option>其他</option>
+        </select>
+      </div>
+
+      <div class="fb-row">
+        <label for="fbMessage">反馈内容（必填）</label>
+        <textarea id="fbMessage" maxlength="2000"
+          placeholder="比如：某个位置看不懂 / 不好找 / 手机上不方便……"></textarea>
+      </div>
+
+      <div class="fb-actions">
+        <button class="fb-cancel" id="fbCancel" type="button">取消</button>
+        <button class="fb-submit" id="fbSubmit" type="button">提交反馈</button>
+      </div>
+      <div class="fb-status" id="fbStatus"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+      回到顶部按钮（脚本控制它的显示/隐藏）
+      ========================================================= -->
+  <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
+
+  <!-- =========================================================
+      JavaScript 交互逻辑
+      ========================================================= -->
+  <script>
+    // 拿到"回到顶部"按钮的 DOM 对象
+    const backToTop = document.getElementById('backToTop');
+
+    // 监听页面滚动：滚过 300 像素后显示按钮，否则隐藏
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+
+    // 点击回到顶部按钮：平滑滚回最顶端
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({
+        top: 0,
+        // 系统开启"减弱动态效果"时不要平滑滚动 —— 这是 JS 的滚动行为，
+        // CSS 里的 prefers-reduced-motion 媒体查询管不到它，必须在这里单独判断
+        behavior: reduceMotion ? 'auto' : 'smooth'
+      });
+    });
+
+    /* =========================================================
+       数字分身：假交互（前端占位，不硬接真实 AI）
+       【数据接入区 · 对话交互】：
+       目前点击「发送」只是在聊天框里追加一条"系统构建中"的提示，
+       并不会发请求。等「数字分身 API」建好后，把下面 sendMessage 里的
+       提示逻辑替换成真正调用接口 / 请求回答即可。
+       接口字段建议：user_question（用户问题）→ assistant_reply（分身回复）
+       ========================================================= */
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatBox = document.getElementById('chatBox');
+
+    // 往聊天框追加一条消息
+    function appendChat(role, text) {
+      const div = document.createElement('div');
+      div.className = 'chat-msg ' + role;
+      const roleSpan = document.createElement('span');
+      roleSpan.className = 'msg-role';
+      roleSpan.textContent = role === 'user' ? '你' : '数字分身';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'msg-text';
+      textSpan.textContent = text;
+      div.appendChild(roleSpan);
+      div.appendChild(textSpan);
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部，让最新消息可见
+    }
+
+    // 点击「发送」：显示用户输入 + 一条"构建中"提示（假交互）
+    function sendMessage() {
+      const value = chatInput.value.trim();
+      if (!value) {
+        return; // 空内容不发送
+      }
+      // 先展示访客输入的内容
+      appendChat('user', value);
+      // 再展示系统提示（真实接口接入前，这里是占位回复）
+      appendChat('bot', '系统构建中，我的数字分身还在接入中，暂时不能回答你哦。😉');
+      chatInput.value = ''; // 清空输入框
+      chatInput.focus();
+    }
+
+    // 绑定事件：点击按钮 或 按回车均可发送
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    /* =========================================================
+       太空主题交互：导航滑入 + 星球锚点跳转 + 当前板块高亮
+       ========================================================= */
+    const navbar = document.querySelector('.navbar');
+    const heroSection = document.getElementById('home');
+    const planets = Array.prototype.slice.call(document.querySelectorAll('.planet'));
+
+    // 建立 "板块 id → 对应星球" 的映射，供下面高亮时查表
+    const planetByTarget = {};
+    planets.forEach(function (p) {
+      const id = (p.getAttribute('href') || '').replace('#', '');
+      if (id) { planetByTarget[id] = p; }
+    });
+
+    // 是否开启了系统级「减弱动态效果」
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* 1) 顶部导航：滚离首屏后从顶部滑入，滚回首屏再隐藏 */
+    function updateNavbar() {
+      const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+      if (window.scrollY > heroHeight - 120) {
+        navbar.classList.add('is-visible');
+      } else {
+        navbar.classList.remove('is-visible');
+      }
+    }
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    window.addEventListener('resize', updateNavbar);
+    updateNavbar();
+
+    /* 2) 点击星球：平滑滚动到对应板块。
+         用 <a href="#id"> 保证语义与键盘可访问性，
+         这里接管点击，统一走 scrollIntoView 让滚动更可控 */
+    planets.forEach(function (planet) {
+      planet.addEventListener('click', function (e) {
+        const target = document.getElementById((planet.getAttribute('href') || '').replace('#', ''));
+        if (!target) { return; }          // 找不到目标就交给浏览器默认行为
+
+        e.preventDefault();
+
+        /* 点击反馈：挂上 .is-rippling 播放扩散波纹 + 提亮脉冲，动画播完立刻摘掉。
+           键盘按 Enter 触发 <a> 时同样会走到这里，所以鼠标和键盘的反馈是一致的。
+           减弱动态效果时直接跳过，免得白白闪一下 */
+        if (!reduceMotion) {
+          planet.classList.remove('is-rippling');   // 先摘掉，保证连续点击每次都能重播
+          void planet.offsetWidth;                  // 强制重排，让上面的摘除立刻生效
+          planet.classList.add('is-rippling');
+          window.setTimeout(function () {
+            planet.classList.remove('is-rippling');
+          }, 520);                                  // 比波纹动画（0.5s）略长，播完再收
+        }
+
+        /* 四颗星球都不走滚动，改走专属的像素传送门：
+           在卡片这颗星球的位置炸开 → 门吞掉整屏 → 化开露出该板块的全屏视图。
+           导航栏和页脚里的文字锚点链接不受影响，仍然是原来的平滑滚动 */
+        if (panelById[target.id]) {
+          openPortalView(planet, panelById[target.id]);
+          return;
+        }
+
+        target.scrollIntoView({
+          behavior: reduceMotion ? 'auto' : 'smooth',
+          block: 'start'
+        });
+
+        // 同步地址栏锚点，方便复制分享；用 replaceState 避免污染后退历史
+        if (history.replaceState) {
+          history.replaceState(null, '', planet.getAttribute('href'));
+        }
+      });
+    });
+
+    /* 3) 用 IntersectionObserver 监听当前所在板块，高亮对应星球 */
+    const observedSections = ['about', 'projects', 'avatar', 'contact']
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);                    // 过滤掉页面上不存在的 id
+
+    if ('IntersectionObserver' in window && observedSections.length) {
+      const sectionObserver = new IntersectionObserver(function (entries) {
+        if (activePanel) { return; }    // 全屏视图开着时不参与高亮：那一块已脱离页面流
+
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) { return; }
+
+          // 先清掉所有高亮，再点亮当前板块对应的那颗星球
+          planets.forEach(function (p) { p.classList.remove('is-active'); });
+          const active = planetByTarget[entry.target.id];
+          if (active) { active.classList.add('is-active'); }
+        });
+      }, {
+        // 用"屏幕中间那条横线"来判断当前板块，避免相邻板块来回抖动
+        rootMargin: '-45% 0px -45% 0px',
+        threshold: 0
+      });
+
+      observedSections.forEach(function (section) {
+        sectionObserver.observe(section);
+      });
+    }
+
+    /* =========================================================
+       像素传送门过渡（四颗星球共用）
+       ---------------------------------------------------------
+       点击任意一颗星球卡片都不再滚动跳转，而是：
+         ① 在卡片那颗星球的位置炸开一道像素传送门（深空蓝 → 青 → 白的螺旋）
+         ② 门加速外扩，吞掉整屏
+         ③ 铺满的那一瞬间，把对应板块瞬时切成全屏视图（整屏被门盖着，看不见这一步，
+            但该板块自己的氛围背景和那层不透明深空底已经在门后面铺好了）
+         ④ 门整块化开 —— 漩涡原地散掉，背景是"本来就在那儿"，没有可辨认的切换点
+         ⑤ 板块内容逐条浮现
+       门是纯代码画的（canvas + 极坐标查找表），不用任何图片素材，
+       所以既没有生成图的水印，也不受"贴图分辨率不够"的限制。
+       返回：左上角按钮 / Esc / 浏览器后退，反向淡出。
+       调试：系统开启"减弱动态效果"时默认跳过动画直接切视图；
+               在网址后加 ?motion=on 可强制播放完整过渡。
+       ========================================================= */
+    const forceMotion = new URLSearchParams(location.search).get('motion') === 'on';
+    const allowMotion = forceMotion || !reduceMotion;
+
+    if (forceMotion) {
+      document.documentElement.classList.add('force-motion');
+    }
+
+    // 四个「全屏视图」板块：平时是页面流里的普通板块，点星球时才浮起来铺满视口
+    const panelById = {};
+    Array.prototype.slice.call(document.querySelectorAll('.view-panel')).forEach(function (s) {
+      if (s.id) { panelById[s.id] = s; }
+    });
+
+    let activePanel = null;     // 当前浮成全屏的是哪一块（没打开时为 null）
+
+    let portalBusy = false;     // 传送门播放途中挡住重复触发，避免连点出问题
+    let portalGen = 0;          // 每次开门递增；中途被退出时用它作废掉没跑完的定时器
+    let savedScrollY = 0;       // 记下进入前的滚动位置，返回时还原
+    let viewPushed = false;     // 记录锚点是不是我们自己压进历史的
+
+    // 传送门的极坐标查找表 + sin 查找表：视口不变就复用。
+    // 有了它们，每帧只剩加法/乘法/查表，十几万像素也能稳稳跑满 60 帧
+    let polarCache = { key: '', DIST: null, AIDX: null, RIDX: null };
+    let SINTAB = null;
+
+    /* 进入某一块的全屏视图：先在卡片那颗星球的位置炸开一道像素传送门，
+       等门吞掉整屏，再把该板块的全屏视图瞬时切上来 */
+    function openPortalView(sourcePlanet, panel) {
+      if (portalBusy || !panel || activePanel) { return; }
+      portalBusy = true;
+      activePanel = panel;          // 记下是哪一块，返回时用它
+      const gen = ++portalGen;      // 本次开门的编号，供定时器校验是否已被退出
+
+      savedScrollY = window.scrollY;
+      document.body.classList.add('view-locked');
+
+      // 往历史里压一条锚点，这样浏览器后退键就能退出这个视图
+      if (history.pushState) {
+        history.pushState({ view: panel.id }, '', '#' + panel.id);
+        viewPushed = true;
+      }
+
+      const sourceImg = sourcePlanet.querySelector('img');
+
+      // 减弱动态效果：不播传送门，直接把视图切过去
+      if (!allowMotion || !sourceImg) {
+        panel.classList.add('is-fullscreen');
+        requestAnimationFrame(function () {
+          panel.classList.add('is-open');
+        });
+        portalBusy = false;
+        return;
+      }
+
+      const rect = sourceImg.getBoundingClientRect();
+      const cx0 = rect.left + rect.width / 2;           // 门的起点 = 卡片里那颗星球的圆心
+      const cy0 = rect.top + rect.height / 2;
+      const r0 = Math.max(2, Math.max(rect.width, rect.height) / 2);
+
+      // 首屏整体淡出，让视觉焦点全给传送门（返回时会还原）
+      if (heroSection) {
+        heroSection.style.transition = 'opacity 0.42s ease';
+        heroSection.style.opacity = '0';
+      }
+
+      // ① 像素传送门：不用图片素材，全部在 canvas 上按固定像素格画出来。
+      //    先铺一块覆盖整屏的低分辨率画布，再用 image-rendering: pixelated 放大 ——
+      //    这样每一格都是正方的（真·像素格）。反过来"在大画布上画方块"是不行的：
+      //    方块边缘会落在半个像素上，糊成毛边，就不像像素画了。
+      const PX = Math.max(3, Math.round(Math.min(window.innerWidth, window.innerHeight) / 270));
+      const W = Math.ceil(window.innerWidth / PX);
+      const H = Math.ceil(window.innerHeight / PX);
+      const canvas = document.createElement('canvas');
+      canvas.className = 'portal-fx';
+      canvas.width = W;
+      canvas.height = H;
+      canvas.style.width = (W * PX) + 'px';
+      canvas.style.height = (H * PX) + 'px';
+      canvas.style.left = '0';
+      canvas.style.top = '0';
+      document.body.appendChild(canvas);
+
+      const g = canvas.getContext('2d');
+      const img = g.createImageData(W, H);
+      const px = img.data;
+
+      const ccx = cx0 / PX;                             // 圆心、半径都换算到逻辑像素
+      const ccy = cy0 / PX;
+      const rStart = Math.max(2, r0 / PX);
+      // 终点半径：吞掉整屏（含离圆心最远的那个角）再留一点余量
+      const rEnd = Math.max(
+        Math.hypot(ccx, ccy), Math.hypot(W - ccx, ccy),
+        Math.hypot(ccx, H - ccy), Math.hypot(W - ccx, H - ccy)
+      ) * 1.06;
+
+      // ② 极坐标查找表：DIST = 到圆心的距离，AIDX = θ 方向的相位（3 条旋臂），
+      //    RIDX = 距离方向的相位（每单位距离 26 圈环带）。
+      //    这三张表建一次就复用；每帧只剩加法、乘法和查表 ——
+      //    真去逐像素算 atan2 + sin，十几万像素会直接把帧率拖死。
+      const cacheKey = W + 'x' + H + '|' + ccx.toFixed(1) + ',' + ccy.toFixed(1);
+      if (polarCache.key !== cacheKey) {
+        const n = W * H;
+        const DIST = new Float32Array(n);
+        const AIDX = new Float32Array(n);
+        const RIDX = new Float32Array(n);
+        const K = 2048 / (2 * Math.PI);
+        for (let y = 0; y < H; y++) {
+          const dy = y - ccy;
+          for (let x = 0; x < W; x++) {
+            const dx = x - ccx;
+            const i = y * W + x;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            DIST[i] = d;
+            AIDX[i] = Math.atan2(dy, dx) * 3 * K;
+            RIDX[i] = d * 26 * K;
+          }
+        }
+        polarCache = { key: cacheKey, DIST: DIST, AIDX: AIDX, RIDX: RIDX };
+      }
+      const DIST = polarCache.DIST, AIDX = polarCache.AIDX, RIDX = polarCache.RIDX;
+
+      if (!SINTAB) {
+        SINTAB = new Float32Array(2048);
+        for (let i = 0; i < 2048; i++) { SINTAB[i] = Math.sin(i * 2 * Math.PI / 2048); }
+      }
+
+      // ③ 调色板：深空蓝 → 青 → 白。只给 6 阶硬色阶 ——
+      //    像素画的味道就在"颜色是断的"上，一渐变就变味了。
+      const RAMP = [
+        [3, 12, 26], [6, 30, 58], [11, 64, 112],
+        [24, 128, 188], [118, 218, 250], [255, 255, 255]
+      ];
+
+      // ④ 逐帧驱动：开门（240ms）→ 加速外扩吞屏（900ms）→ 铺满后转一下（200ms）。
+      //    每一帧都是从零重画整块画布，不做增量 —— 门的形状随时在变，
+      //    增量反而更容易留下残影。
+      //    结尾不做"白光一闪"（按反馈去掉）：门铺满之后直接化开，
+      //    露出后面已经铺好的星空，转场更安静。
+      const OPEN = 240, SWALLOW = 900, HOLD = 200, MELT = 520;
+      const TOTAL = OPEN + SWALLOW + HOLD;
+
+      // 门铺满整屏的那一瞬间，把对应板块瞬时切到全屏视图：
+      // 此刻整屏都被门盖着，这一步用户看不见；但等门化开时，底下已经是一块
+      // 铺好的不透明深空底 + 正在淡入的氛围背景图，既漏不出别的板块，
+      // 也没有可辨认的"切换点"
+      window.setTimeout(function () {
+        if (gen !== portalGen) { return; }
+        // 必须是瞬时切：门正盖着，不需要那 1s 淡入。留着它，等门化开时
+        // 全屏层才半透明，后面的页面会透出来
+        panel.style.setProperty('transition', 'none', 'important');
+        panel.classList.add('is-fullscreen');
+        requestAnimationFrame(function () {
+          if (gen !== portalGen) { return; }
+          panel.classList.add('is-open');   // 触发背景淡入 + 内容逐条浮现
+        });
+      }, OPEN + SWALLOW);
+
+      // 切完就把过渡交还给 CSS，返回时的 1s 淡出照旧
+      window.setTimeout(function () {
+        if (gen !== portalGen) { return; }
+        panel.style.removeProperty('transition');
+      }, OPEN + SWALLOW + 80);
+
+      const startedAt = performance.now();
+
+      function step(now) {
+        if (gen !== portalGen) { return; }         // 中途被退出：立刻收工
+        const t = now - startedAt;
+        const sec = t / 1000;
+
+        // 半径：开门阶段基本不动，之后一口气外扩，直到吞掉整屏
+        let r;
+        if (t < OPEN) {
+          r = rStart * (1 + 0.05 * (t / OPEN));
+        } else if (t < OPEN + SWALLOW) {
+          const p = (t - OPEN) / SWALLOW;
+          r = rStart + (rEnd - rStart) * (1 - Math.pow(1 - p, 3));
+        } else {
+          r = rEnd;
+        }
+
+        // 开门那一段由暗到亮，避免"啪"地一下换掉卡片上那颗星球
+        const fadeIn = Math.min(1, t / (OPEN * 0.6));
+        // 螺旋自转的快慢（换算成查找表的下标增量）
+        const sOff = sec * 5.2 * (2048 / (2 * Math.PI));
+        const inv = 1 / r;
+
+        // 只扫圆的包围盒；门以外保持全透明，页面照常透出来
+        const x0 = Math.max(0, Math.floor(ccx - r)), x1 = Math.min(W - 1, Math.ceil(ccx + r));
+        const y0 = Math.max(0, Math.floor(ccy - r)), y1 = Math.min(H - 1, Math.ceil(ccy + r));
+        px.fill(0);
+
+        for (let y = y0; y <= y1; y++) {
+          const base = y * W;
+          for (let x = x0; x <= x1; x++) {
+            const i = base + x;
+            const d = DIST[i];
+            if (d > r) { continue; }
+            const q = d * inv;                     // 0 = 圆心，1 = 门边
+            const s = SINTAB[(AIDX[i] + RIDX[i] * inv + sOff) & 2047];
+            const rim = q > 0.80 ? (q - 0.80) * 5 : 0;              // 门框那圈亮边
+            const core = q < 0.34 ? 1 - q * 2.941 : 0;              // 中心的亮核
+            let v = 0.30 + s * 0.30 + (s * s - 0.5) * 0.20 + rim * 0.80 + core * 0.34;
+            if (v < 0) { v = 0; } else if (v > 1) { v = 1; }
+            const c = RAMP[(v * 5 + 0.5) | 0];                      // 硬色阶：只取 6 阶
+            const o = i * 4;
+            px[o] = c[0]; px[o + 1] = c[1]; px[o + 2] = c[2];
+            px[o + 3] = 255 * fadeIn;
+          }
+        }
+        g.putImageData(img, 0, 0);
+
+        if (t < TOTAL) { requestAnimationFrame(step); return; }
+
+        // ⑤ 门已经铺满整屏、底下星空也铺好了：把它整块化开 ——
+        //    漩涡在原地散掉，星空就是"本来就在那儿"
+        canvas.style.transition = 'opacity ' + (MELT / 1000) + 's ease';
+        canvas.style.opacity = '0';
+        window.setTimeout(function () {
+          canvas.remove();
+          if (gen === portalGen) { portalBusy = false; }
+        }, MELT + 60);
+      }
+      requestAnimationFrame(step);
+    }
+
+    /* 退出全屏视图，回到首页原来的位置 */
+    function closePortalView() {
+      const panel = activePanel;
+      if (!panel) { return; }
+
+      // 万一门还在播就被退出（Esc / 浏览器后退抢在动画前）：作废掉本次开门的编号，
+      // 把门直接收掉 —— 否则它跑完还会把全屏层推上来，出现"关了又弹开"
+      portalGen++;
+      portalBusy = false;
+      const fx = document.querySelector('.portal-fx');
+      if (fx) { fx.remove(); }
+
+      panel.classList.remove('is-open');    // 先淡出，再摘掉全屏层
+
+      window.setTimeout(function () {
+        if (panel !== activePanel) { return; }   // 这期间又开了别的视图 / 已经收尾过，别重复处理
+        panel.classList.remove('is-fullscreen');
+        activePanel = null;
+        document.body.classList.remove('view-locked');
+        if (heroSection) { heroSection.style.opacity = ''; }
+        window.scrollTo(0, savedScrollY);          // 回到点击星球之前的滚动位置
+      }, allowMotion ? 380 : 0);
+    }
+
+    // 返回按钮：四块各有一个，谁的全屏视图开着就归谁管
+    Array.prototype.slice.call(document.querySelectorAll('.view-back')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (viewPushed) { history.back(); } else { closePortalView(); }
+      });
+    });
+
+    // Esc 退出，符合大家对"全屏层"的直觉
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') { return; }
+      if (activePanel) {
+        if (viewPushed) { history.back(); } else { closePortalView(); }
+      }
+    });
+
+    // 浏览器后退/前进时同步关掉视图
+    window.addEventListener('popstate', function () {
+      viewPushed = false;
+      closePortalView();
+    });
+  </script>
+
+  <!-- =========================================================
+       个人主页 V3 · 反馈提交逻辑（写入 Supabase 后台）
+       ========================================================= -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      // 下面两个值来自 Supabase -> Project Settings -> API Keys
+      // publishable key 本来就是公开钥匙，放前端是正常做法（secret key 绝不能出现在这里）
+      const SUPABASE_URL = 'https://aupnfwgxgzyuyokimhph.supabase.co';
+      const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_P0IjuFI78tg_i3VlBCj_6g_YMfiKaq9';
+
+      // 网站版本：提交时自动附带
+      const SITE_VERSION = 'v3.0';
+
+      const q = function (id) { return document.getElementById(id); };
+      const entryBtn = q('fbEntry');
+      const mask = q('fbMask');
+      const statusEl = q('fbStatus');
+      const submitBtn = q('fbSubmit');
+      const cancelBtn = q('fbCancel');
+
+      // 页面上没有这些元素就安静退出，不报错
+      if (!entryBtn || !mask || !submitBtn) { return; }
+
+      const lib = window.supabase;
+      const client = lib
+        ? lib.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+        : null;
+
+      function openForm() {
+        mask.classList.add('is-open');
+        statusEl.textContent = '';
+        statusEl.className = 'fb-status';
+      }
+      function closeForm() {
+        mask.classList.remove('is-open');
+      }
+
+      entryBtn.addEventListener('click', openForm);
+      cancelBtn.addEventListener('click', closeForm);
+      mask.addEventListener('click', function (e) {
+        if (e.target === mask) { closeForm(); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mask.classList.contains('is-open')) { closeForm(); }
+      });
+
+      submitBtn.addEventListener('click', async function () {
+        const message = q('fbMessage').value.trim();
+
+        if (!message) {                        // 必填校验：失败时保留已输入内容
+          statusEl.textContent = '反馈内容还没写哦~';
+          statusEl.className = 'fb-status is-err';
+          return;
+        }
+        if (!client) {                          // 客户端库没加载出来：温柔提示，不崩
+          statusEl.textContent = '后台连接库没加载出来，刷新一下再试。';
+          statusEl.className = 'fb-status is-err';
+          return;
+        }
+
+        // 提交中：按钮禁用，防止重复点击
+        submitBtn.disabled = true;
+        statusEl.textContent = '提交中…';
+        statusEl.className = 'fb-status';
+
+        const res = await client.from('feedback').insert({
+          name:     q('fbName').value.trim() || null,
+          relation: q('fbRelation').value || null,
+          device:   q('fbDevice').value || null,
+          message:  message,
+          version:  SITE_VERSION
+          // created_at 由数据库自动记录，无需前端传
+        });
+
+        submitBtn.disabled = false;
+
+        if (res.error) {                        // 失败：保留输入，允许重试
+          statusEl.textContent = '没提交成功，可以稍后再试一次。（' + res.error.message + '）';
+          statusEl.className = 'fb-status is-err';
+          return;
+        }
+
+        // 成功：提示后清空并关闭
+        statusEl.textContent = '收到啦，谢谢你！';
+        statusEl.className = 'fb-status is-ok';
+        q('fbName').value = ''; q('fbRelation').value = '';
+        q('fbDevice').value = ''; q('fbMessage').value = '';
+        setTimeout(closeForm, 1200);
+      });
+    })();
+  </script>
+</body>
+</html>
+
