@@ -634,7 +634,7 @@
       opacity: 0.92;
     }
 
-    /* 状态徽标：功能开发中 / 数字分身接入中 */
+    /* 状态徽标：数字分身在线状态 */
     .stage-status {
       display: inline-flex;
       align-items: center;
@@ -700,7 +700,7 @@
       border-radius: 12px;
       padding: 10px 14px;
       color: var(--text-muted);
-      font-style: italic;      /* 系统构建中的提示，用斜体弱化 */
+      font-style: normal;      /* 真实回答用正常字体，不再弱化 */
     }
 
     /* 输入区：输入框 + 发送按钮 */
@@ -1997,12 +1997,10 @@
   </section>
 
   <!-- =========================================================
-      数字分身（前端先行 · 数据占位 · 功能开发中）
-      【数据接入区】说明：
-      目前下面所有内容都是"占位/演示数据"，用于先让界面正常显示。
-      等数据库和「数字分身 API」建好后，只需把标注了「数据接入区」的占位内容，
-      替换成从接口 / 数据库读取的真实数据即可，前端结构不用重做。
-      ========================================================= -->
+       数字分身（已接入 DeepSeek · 真实对话）
+       前端调用 Supabase Edge Function，由函数携带服务端密钥请求模型；
+       模型的回答依据 supabase/functions/twin-chat/persona.ts 里的个人资料。
+       ========================================================= -->
   <section id="avatar" class="avatar-stage view-panel">
     <!-- 氛围背景层 + 返回按钮：全屏视图专用（背景就是这颗星球自己的画面，放大后重模糊） -->
     <div class="view-bg" aria-hidden="true"></div>
@@ -2011,7 +2009,7 @@
       <div class="section-header view-rise" style="--rise:.10s">
         <span class="section-eyebrow">Digital Twin</span>
         <h2 class="section-title">数字分身</h2>
-        <p class="section-subtitle">一个正在搭建中的“虚拟的我”，以后陪你聊聊</p>
+        <p class="section-subtitle">基于我的真实资料搭建，随时回答你的问题</p>
       </div>
 
       <div class="avatar-wrap view-rise" style="--rise:.24s">
@@ -2020,40 +2018,38 @@
 
           <!-- ========== 左侧：形象展示区 ========== -->
           <div class="avatar-figure">
-            <!-- 【数据接入区 · 形象】：
-                 现在是真实形象图（像素风头像，圆形裁切）。
-                 以后接口建好，把 src 换成 avatar_url 即可，前端结构不用改。 -->
+            <!-- 形象图：像素风头像，圆形裁切；换成真实照片时只改 src 即可 -->
             <img class="twin-avatar" src="01-pixel-portrait-web.png" alt="李宸谊的数字分身形象" />
 
-            <!-- 功能状态徽标：明确告知访客“这是在建的功能” -->
-            <div class="stage-status">
-              <span class="pulse"></span> 功能开发中 · 数字分身接入中
+            <!-- 状态徽标：告知访客数字分身当前在线 -->
+            <div class="stage-status is-live">
+              <span class="pulse"></span> 在线 · 已接入 DeepSeek
             </div>
           </div>
 
-          <!-- ========== 右侧：对话 / 互动区 + 占位数据区 ========== -->
+          <!-- ========== 右侧：对话区 + 基础信息 / 快捷提问 ========== -->
           <div class="avatar-panel">
 
-            <!-- 对话 / 互动区：目前是假交互（前端占位），不硬接真实 AI -->
-            <div class="chat-box" id="chatBox">
-              <!-- 【数据接入区 · 对话】：下面这两个气泡目前是演示文案。
-                   以后应改为从「数字分身 API」读取真实回答。
-                   接口字段建议：user_question（用户问题）、assistant_reply（分身回复） -->
+            <!-- 对话区：消息由 Supabase Edge Function 调用 DeepSeek 生成 -->
+            <div class="chat-box" id="chatBox" role="log" aria-live="polite" aria-label="与数字分身的对话">
+              <!-- 欢迎语由页面展示；真实回答由 Supabase Edge Function 调用 DeepSeek 生成 -->
               <div class="chat-msg bot">
                 <span class="msg-role">数字分身</span>
-                <span class="msg-text">嗨，我是李宸谊的数字分身。等我接入完成后，就能回答你的提问啦~</span>
-              </div>
-              <div class="chat-msg bot">
-                <span class="msg-role">数字分身</span>
-                <span class="msg-text">系统构建中，目前还不能真正对话哦。😉</span>
+                <span class="msg-text">嗨，我是李宸谊的数字分身。可以问我他的学习方向、做过的项目、兴趣爱好，或者怎么联系他。</span>
               </div>
             </div>
 
-            <!-- 输入区：输入框 + 发送按钮（点击后只提示“构建中”，不发真实请求） -->
+            <!-- 输入区：输入框 + 发送按钮。发送后调用 Supabase Edge Function，由 DeepSeek 生成回答 -->
             <div class="chat-input-row">
-              <input id="chatInput" class="chat-input" type="text" placeholder="想问数字分身点什么？（功能开发中）" />
+              <input id="chatInput" class="chat-input" type="text" maxlength="300" autocomplete="off"
+                placeholder="问我关于学习、项目、爱好或联系方式……" />
               <button id="chatSend" class="chat-send" type="button">发送</button>
             </div>
+            <div class="chat-foot">
+              <span class="chat-note">由 AI 生成，可能不准确；重要事情请邮件联系。</span>
+              <button id="chatReset" class="chat-reset" type="button">重新开始</button>
+            </div>
+            <div class="chat-status" id="chatStatus" role="status" aria-live="polite"></div>
 
             <!-- 占位数据区：基础信息 + FAQ（全部为占位数据） -->
             <div class="avatar-info">
@@ -2061,8 +2057,7 @@
               <!-- 基础信息 -->
               <div class="info-block">
                 <h4>基础信息</h4>
-                <!-- 【数据接入区 · 基础信息】：
-                     下面每一行都是占位值，接口 / 数据库建好后替换为真实字段。 -->
+                <!-- 基础信息：公开资料，与 persona.ts 中的知识库保持一致 -->
                 <div class="info-row"><b>姓名：</b>李宸谊</div>
                 <div class="info-row"><b>方向：</b>计算机大一学生 · 前端开发</div>
                 <div class="info-row"><b>简介：</b>喜欢自己动手，把想法做成真正能用的程序。</div>
@@ -2072,21 +2067,19 @@
               <!-- 常被问到的问题 / FAQ -->
               <div class="info-block">
                 <h4>常被问到</h4>
-                <!-- 【数据接入区 · FAQ】：
-                     下面配对是占位问答，接口 / 数据库建好后替换为真实 FAQ。
-                     接口字段建议：question（问题）、answer（回答） -->
-                <div class="faq-item">
-                  <div class="faq-q">你叫什么？</div>
-                  <div class="faq-a">我叫李宸谊，一名计算机大一学生。</div>
-                </div>
-                <div class="faq-item">
-                  <div class="faq-q">你在学什么？</div>
-                  <div class="faq-a">前端开发，目前在学 JavaScript 与接口调用。</div>
-                </div>
-                <div class="faq-item">
-                  <div class="faq-q">怎么联系你？</div>
-                  <div class="faq-a">可以发邮件到 2795324900@qq.com。</div>
-                </div>
+                <!-- 快捷提问：点击后把 data-q 发给数字分身，真实回答由模型生成 -->
+                <button class="faq-item" type="button" data-q="你叫什么？">
+                  <span class="faq-q">你叫什么？</span>
+                  <span class="faq-a">点一下，直接问数字分身</span>
+                </button>
+                <button class="faq-item" type="button" data-q="你在学什么？">
+                  <span class="faq-q">你在学什么？</span>
+                  <span class="faq-a">点一下，直接问数字分身</span>
+                </button>
+                <button class="faq-item" type="button" data-q="怎么联系你？">
+                  <span class="faq-q">怎么联系你？</span>
+                  <span class="faq-a">点一下，直接问数字分身</span>
+                </button>
               </div>
 
             </div>
@@ -2212,11 +2205,172 @@
     .fb-status { margin-top: 10px; font-size: 13px; min-height: 18px; }
     .fb-status.is-ok { color: #86efac; }
     .fb-status.is-err { color: #fca5a5; }
+
+    /* =========================================================
+       数字分身 V4：真实对话样式
+       ========================================================= */
+    /* 在线状态：从橙色“接入中”改成绿色“在线” */
+    .stage-status.is-live {
+      background: rgba(34, 197, 94, 0.12);
+      color: #16a34a;
+    }
+    .stage-status.is-live .pulse { background: #22c55e; }
+
+    /* 消息多了以后在框内滚动，不把整页越撑越长 */
+    .chat-box {
+      max-height: 340px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+    }
+
+    /* 访客消息：右对齐的蓝色气泡 */
+    .chat-msg.user { align-items: flex-end; }
+    .chat-msg.user .msg-text {
+      align-self: flex-end;
+      max-width: 86%;
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    /* 数字分身消息：正常字体（原来是斜体占位文案） */
+    .chat-msg.bot .msg-text {
+      font-style: normal;
+      color: var(--text);
+      max-width: 92%;
+    }
+    .chat-msg.bot.is-error .msg-text {
+      color: #b91c1c;
+      background: rgba(185, 28, 28, 0.06);
+      border-color: rgba(185, 28, 28, 0.25);
+    }
+
+    /* “正在输入”的三个点 */
+    .chat-typing .msg-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 20px;
+    }
+    .chat-typing .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      display: inline-block;
+      animation: typingDot 1.2s ease-in-out infinite;
+    }
+    .chat-typing .dot:nth-child(2) { animation-delay: 0.15s; }
+    .chat-typing .dot:nth-child(3) { animation-delay: 0.30s; }
+    @keyframes typingDot {
+      0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+      30%           { opacity: 1;    transform: translateY(-3px); }
+    }
+
+    /* 输入区下方：免责声明 + 重新开始 */
+    .chat-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .chat-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .chat-reset {
+      flex: 0 0 auto;
+      border: none;
+      background: none;
+      padding: 2px 0;
+      color: var(--primary);
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .chat-reset:hover { color: var(--primary-dark); }
+
+    /* 状态提示：错误信息用红色，正常时留白 */
+    .chat-status {
+      min-height: 18px;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .chat-status.is-error { color: #dc2626; }
+
+    /* 请求中：按钮和输入框禁用 */
+    .chat-input:disabled,
+    .chat-send:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .chat-send:disabled:hover {
+      background: var(--primary);
+      transform: none;
+    }
+
+    /* “常被问到”改成可点击的快捷提问按钮 */
+    button.faq-item {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: none;
+      background: none;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    button.faq-item .faq-q { display: block; }
+    button.faq-item .faq-a { display: block; }
+    button.faq-item:hover .faq-q { color: var(--primary); }
+    button.faq-item:hover .faq-a { color: var(--primary-dark); }
+
+    /* 全屏深色视图下，弱化文字统一提亮一档，保证可读性 */
+    .view-panel .faq-a,
+    .view-panel .chat-note { color: #c3cee6; }
+    .view-panel .chat-status.is-error { color: #fca5a5; }
+    .view-panel .chat-msg.bot.is-error .msg-text {
+      color: #fca5a5;
+      border-color: rgba(252, 165, 165, 0.32);
+      background: rgba(252, 165, 165, 0.08);
+    }
+
+    @media (max-width: 640px) {
+      .chat-box { max-height: 300px; }
+      .chat-input-row { gap: 8px; }
+      .chat-send { padding: 12px 18px; }
+      .chat-foot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
   </style>
 
   <!-- =========================================================
+      站点配置：Supabase 项目地址 + publishable key
+      publishable key 本来就是公开钥匙，放前端是正常做法；
+      真正敏感的模型密钥存在 Supabase Edge Function 的 Secrets 里。
+       ========================================================= -->
+  <script>
+    window.SITE_CONFIG = {
+      supabaseUrl: 'https://aupnfwgxgzyuyokimhph.supabase.co',
+      supabaseKey: 'sb_publishable_P0IjuFI78tg_i3VlBCj_6g_YMfiKaq9',
+      twinEndpoint: 'https://aupnfwgxgzyuyokimhph.supabase.co/functions/v1/swift-function'
+    };
+  </script>
+
+  <!-- =========================================================
       回到顶部按钮（脚本控制它的显示/隐藏）
-      ========================================================= -->
+       ========================================================= -->
   <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
 
   <!-- =========================================================
@@ -2246,54 +2400,189 @@
     });
 
     /* =========================================================
-       数字分身：假交互（前端占位，不硬接真实 AI）
-       【数据接入区 · 对话交互】：
-       目前点击「发送」只是在聊天框里追加一条"系统构建中"的提示，
-       并不会发请求。等「数字分身 API」建好后，把下面 sendMessage 里的
-       提示逻辑替换成真正调用接口 / 请求回答即可。
-       接口字段建议：user_question（用户问题）→ assistant_reply（分身回复）
+       数字分身：真实对话
+       ---------------------------------------------------------
+       前端只请求自己的 Supabase Edge Function，再由函数调用 DeepSeek。
+       模型密钥存在 Supabase Secrets，不会出现在这个公开页面里。
+       多轮上下文只带最近 12 条，避免请求越来越慢、费用越来越高。
        ========================================================= */
-    const chatInput = document.getElementById('chatInput');
-    const chatSend = document.getElementById('chatSend');
-    const chatBox = document.getElementById('chatBox');
+    (function () {
+      const chatInput = document.getElementById('chatInput');
+      const chatSend = document.getElementById('chatSend');
+      const chatBox = document.getElementById('chatBox');
+      const chatReset = document.getElementById('chatReset');
+      const chatStatus = document.getElementById('chatStatus');
 
-    // 往聊天框追加一条消息
-    function appendChat(role, text) {
-      const div = document.createElement('div');
-      div.className = 'chat-msg ' + role;
-      const roleSpan = document.createElement('span');
-      roleSpan.className = 'msg-role';
-      roleSpan.textContent = role === 'user' ? '你' : '数字分身';
-      const textSpan = document.createElement('span');
-      textSpan.className = 'msg-text';
-      textSpan.textContent = text;
-      div.appendChild(roleSpan);
-      div.appendChild(textSpan);
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部，让最新消息可见
-    }
+      // 页面上没有聊天区就安静退出，不影响其他脚本
+      if (!chatInput || !chatSend || !chatBox) { return; }
 
-    // 点击「发送」：显示用户输入 + 一条"构建中"提示（假交互）
-    function sendMessage() {
-      const value = chatInput.value.trim();
-      if (!value) {
-        return; // 空内容不发送
+      const cfg = window.SITE_CONFIG || {};
+      const TWIN_ENDPOINT = cfg.twinEndpoint || '';
+      const TWIN_KEY = cfg.supabaseKey || '';
+
+      const MAX_INPUT_LENGTH = 300;       // 和输入框 maxlength 保持一致
+      const MAX_HISTORY_MESSAGES = 12;    // 最多带 12 条上下文
+      const REQUEST_TIMEOUT_MS = 45000;   // 前端等待上限，比后端 30s 略长
+
+      let chatHistory = [];               // [{ role: 'user'|'assistant', content: '...' }]
+      let chatBusy = false;
+
+      function setChatStatus(text, isError) {
+        if (!chatStatus) { return; }
+        chatStatus.textContent = text || '';
+        chatStatus.className = 'chat-status' + (isError ? ' is-error' : '');
       }
-      // 先展示访客输入的内容
-      appendChat('user', value);
-      // 再展示系统提示（真实接口接入前，这里是占位回复）
-      appendChat('bot', '系统构建中，我的数字分身还在接入中，暂时不能回答你哦。😉');
-      chatInput.value = ''; // 清空输入框
-      chatInput.focus();
-    }
 
-    // 绑定事件：点击按钮 或 按回车均可发送
-    chatSend.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keyup', function (e) {
-      if (e.key === 'Enter') {
-        sendMessage();
+      function scrollChatToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
       }
-    });
+
+      // 往聊天框追加一条消息
+      function appendChat(role, text, isError) {
+        const div = document.createElement('div');
+        div.className = 'chat-msg ' + role + (isError ? ' is-error' : '');
+        const roleSpan = document.createElement('span');
+        roleSpan.className = 'msg-role';
+        roleSpan.textContent = role === 'user' ? '你' : '数字分身';
+        const textSpan = document.createElement('span');
+        textSpan.className = 'msg-text';
+        textSpan.textContent = text;
+        div.appendChild(roleSpan);
+        div.appendChild(textSpan);
+        chatBox.appendChild(div);
+        scrollChatToBottom();
+        return div;
+      }
+
+      // “正在输入”气泡：三个跳动的点
+      function appendTyping() {
+        const div = document.createElement('div');
+        div.className = 'chat-msg bot chat-typing';
+        const roleSpan = document.createElement('span');
+        roleSpan.className = 'msg-role';
+        roleSpan.textContent = '数字分身';
+        const textSpan = document.createElement('span');
+        textSpan.className = 'msg-text';
+        for (let i = 0; i < 3; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          textSpan.appendChild(dot);
+        }
+        div.appendChild(roleSpan);
+        div.appendChild(textSpan);
+        chatBox.appendChild(div);
+        scrollChatToBottom();
+        return div;
+      }
+
+      function setChatBusy(busy) {
+        chatBusy = busy;
+        chatSend.disabled = busy;
+        chatInput.disabled = busy;
+        chatSend.textContent = busy ? '思考中…' : '发送';
+      }
+
+      async function sendMessage(text) {
+        if (chatBusy) { return; }
+
+        const value = (typeof text === 'string' ? text : chatInput.value).trim();
+        if (!value) { return; }
+
+        if (value.length > MAX_INPUT_LENGTH) {
+          setChatStatus('问题太长了，控制在 ' + MAX_INPUT_LENGTH + ' 字以内吧。', true);
+          return;
+        }
+
+        if (!TWIN_ENDPOINT || !TWIN_KEY) {
+          setChatStatus('数字分身还没有配置好，请稍后再试。', true);
+          return;
+        }
+
+        setChatStatus('');
+        appendChat('user', value);
+        chatInput.value = '';
+        chatHistory.push({ role: 'user', content: value });
+
+        // 只带最近若干条，并保证上下文从 user 开始
+        const outgoing = chatHistory.slice(-MAX_HISTORY_MESSAGES);
+        while (outgoing.length && outgoing[0].role !== 'user') { outgoing.shift(); }
+
+        setChatBusy(true);
+        const typing = appendTyping();
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(function () { controller.abort(); }, REQUEST_TIMEOUT_MS);
+
+        try {
+          const res = await fetch(TWIN_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': TWIN_KEY,
+              'Authorization': 'Bearer ' + TWIN_KEY
+            },
+            body: JSON.stringify({ messages: outgoing }),
+            signal: controller.signal
+          });
+
+          const data = await res.json().catch(function () { return {}; });
+
+          if (!res.ok) {
+            throw new Error((data && data.error) ? data.error : '请求失败（' + res.status + '）');
+          }
+
+          const reply = (data && data.reply) ? String(data.reply).trim() : '';
+          if (!reply) { throw new Error('数字分身这次没说话，换个问法再试试。'); }
+
+          typing.remove();
+          appendChat('bot', reply);
+          chatHistory.push({ role: 'assistant', content: reply });
+        } catch (err) {
+          typing.remove();
+          const aborted = err && err.name === 'AbortError';
+          const raw = err && err.message ? String(err.message) : '';
+          let message = raw || '网络不太稳定，稍后再试。';
+          if (aborted) {
+            message = '等了太久还没回应，稍后再试一次吧。';
+          } else if (/failed to fetch|networkerror|load failed/i.test(raw)) {
+            message = '网络连接失败，检查一下网络再试。';
+          }
+          appendChat('bot', '抱歉，我这边暂时没能回答上来：' + message, true);
+          setChatStatus(aborted ? '请求超时' : '这次没连上，稍后再试。', true);
+        } finally {
+          clearTimeout(timeoutId);
+          setChatBusy(false);
+          chatInput.focus();
+        }
+      }
+
+      function resetChat() {
+        if (chatBusy) { return; }
+        chatHistory = [];
+        chatBox.innerHTML = '';
+        appendChat('bot', '我们重新开始吧。想了解李宸谊的学习、项目、爱好，还是联系方式？');
+        setChatStatus('');
+        chatInput.value = '';
+        chatInput.focus();
+      }
+
+      // 点击按钮 或 按回车发送；中文输入法选词时按回车不误发
+      chatSend.addEventListener('click', function () { sendMessage(); });
+      chatInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.isComposing) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      if (chatReset) { chatReset.addEventListener('click', resetChat); }
+
+      // “常被问到”改成快捷提问：点一下直接发送
+      Array.prototype.slice.call(document.querySelectorAll('.faq-item[data-q]')).forEach(function (item) {
+        item.addEventListener('click', function () {
+          sendMessage(item.getAttribute('data-q') || '');
+        });
+      });
+    })();
 
     /* =========================================================
        太空主题交互：导航滑入 + 星球锚点跳转 + 当前板块高亮
@@ -2689,10 +2978,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     (function () {
-      // 下面两个值来自 Supabase -> Project Settings -> API Keys
-      // publishable key 本来就是公开钥匙，放前端是正常做法（secret key 绝不能出现在这里）
-      const SUPABASE_URL = 'https://aupnfwgxgzyuyokimhph.supabase.co';
-      const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_P0IjuFI78tg_i3VlBCj_6g_YMfiKaq9';
+      // 配置统一放在页面底部的 window.SITE_CONFIG 里，聊天和意见箱共用
+      const cfg = window.SITE_CONFIG || {};
+      const SUPABASE_URL = cfg.supabaseUrl || '';
+      const SUPABASE_PUBLISHABLE_KEY = cfg.supabaseKey || '';
 
       // 网站版本：提交时自动附带
       const SITE_VERSION = 'v3.1';
@@ -2705,7 +2994,7 @@
       if (!submitBtn || !statusEl) { return; }
 
       const lib = window.supabase;
-      const client = lib
+      const client = (lib && SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY)
         ? lib.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
         : null;
 
